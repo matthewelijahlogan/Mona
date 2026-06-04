@@ -1,6 +1,7 @@
 import { Platform } from "react-native";
 
 const configuredBaseUrl = process.env.EXPO_PUBLIC_API_BASE_URL?.trim();
+const hostedBaseUrl = "https://mona-cancer-api.onrender.com";
 const fallbackBaseUrls = Platform.select({
   android: [
     "http://127.0.0.1:8001",
@@ -13,6 +14,7 @@ const fallbackBaseUrls = Platform.select({
 
 const candidateBaseUrls = [
   configuredBaseUrl,
+  hostedBaseUrl,
   ...(fallbackBaseUrls || []),
 ]
   .filter(Boolean)
