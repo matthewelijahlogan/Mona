@@ -1,0 +1,110 @@
+[
+  {
+    "name": "Aluminum",
+    "symbol": "Al",
+    "atomic_number": 13,
+    "group": "Post-transition Metal",
+    "type": "Metal",
+    "bio_activity": "Low Toxicity",
+    "description": "Widely used metal; some studies investigate links to neurotoxicity but limited cancer relevance."
+  },
+  {
+    "name": "Silicon",
+    "symbol": "Si",
+    "atomic_number": 14,
+    "group": "Metalloid",
+    "type": "Metalloid",
+    "bio_activity": "Neutral",
+    "description": "Common in the environment and used in biomedical devices; biologically inert."
+  },
+  {
+    "name": "Phosphorus",
+    "symbol": "P",
+    "atomic_number": 15,
+    "group": "Nonmetal",
+    "type": "Nonmetal",
+    "bio_activity": "Essential",
+    "description": "Vital for DNA, RNA, and ATP; critical for energy transfer and cell signaling."
+  },
+  {
+    "name": "Sulfur",
+    "symbol": "S",
+    "atomic_number": 16,
+    "group": "Nonmetal",
+    "type": "Nonmetal",
+    "bio_activity": "Essential",
+    "description": "Important for amino acids and enzymes; involved in cell metabolism."
+  },
+  {
+    "name": "Chlorine",
+    "symbol": "Cl",
+    "atomic_number": 17,
+    "group": "Halogen",
+    "type": "Nonmetal",
+    "bio_activity": "Variable",
+    "description": "Essential electrolyte as chloride ion; chlorine compounds can be toxic."
+  },
+  {
+    "name": "Argon",
+    "symbol": "Ar",
+    "atomic_number": 18,
+    "group": "Noble Gas",
+    "type": "Nonmetal",
+    "bio_activity": "Inert",
+    "description": "Chemically inert, no biological role."
+  },
+  {
+    "name": "Potassium",
+    "symbol": "K",
+    "atomic_number": 19,
+    "group": "Alkali Metal",
+    "type": "Metal",
+    "bio_activity": "Essential",
+    "description": "Key electrolyte involved in cell signaling and muscle contraction."
+  },
+  {
+    "name": "Calcium",
+    "symbol": "Ca",
+    "atomic_number": 20,
+    "group": "Alkaline Earth Metal",
+    "type": "Metal",
+    "bio_activity": "Supportive",
+    "description": "Crucial in cell signaling, apoptosis, and bone structure."
+  },
+  {
+    "name": "Scandium",
+    "symbol": "Sc",
+    "atomic_number": 21,
+    "group": "Transition Metal",
+    "type": "Metal",
+    "bio_activity": "Unknown",
+    "description": "Limited biological role; some research into rare earth metals in medicine."
+  },
+  {
+    "name": "Titanium",
+    "symbol": "Ti",
+    "atomic_number": 22,
+    "group": "Transition Metal",
+    "type": "Metal",
+    "bio_activity": "Biocompatible",
+    "description": "Used in implants and prosthetics due to excellent biocompatibility."
+  },
+  {
+    "name": "Vanadium",
+    "symbol": "V",
+    "atomic_number": 23,
+    "group": "Transition Metal",
+    "type": "Metal",
+    "bio_activity": "Variable",
+    "description": "Trace element studied for insulin mimetic effects and potential anticancer properties."
+  },
+  {
+    "name": "Chromium",
+    "symbol": "Cr",
+    "atomic_number": 24,
+    "group": "Transition Metal",
+    "type": "Metal",
+    "bio_activity": "Variable",
+    "description": "Essential in trace amounts but certain forms (Cr VI) are carcinogenic."
+  }
+]

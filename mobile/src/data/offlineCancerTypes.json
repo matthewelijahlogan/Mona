@@ -1,0 +1,245 @@
+[
+  {
+    "name": "Adenocarcinoma",
+    "supported_by_model": false,
+    "description": "A cancer that forms in mucus-secreting glands and is common in the colon, lungs, pancreas, and breast.",
+    "tissue": "Colon",
+    "aggressiveness_score": 0.6,
+    "code": "TCGA-COAD",
+    "origin": "Epithelial"
+  },
+  {
+    "name": "Sarcoma",
+    "supported_by_model": false,
+    "description": "A rare cancer of connective tissues such as bone, cartilage, fat, muscle, or blood vessels.",
+    "tissue": "Connective/Bone/Muscle",
+    "aggressiveness_score": 0.7,
+    "code": "TCGA-SARC",
+    "origin": "Mesenchymal"
+  },
+  {
+    "name": "Leukemia",
+    "supported_by_model": false,
+    "description": "A cancer of blood-forming tissues that leads to the overproduction of abnormal white blood cells.",
+    "tissue": "Blood",
+    "aggressiveness_score": 0.75,
+    "code": "TCGA-LAML",
+    "origin": "Hematopoietic"
+  },
+  {
+    "name": "Glioma",
+    "supported_by_model": false,
+    "description": "A tumor that starts in the glial cells of the brain or spine. Glioblastoma is the most aggressive form.",
+    "tissue": "Brain",
+    "aggressiveness_score": 0.9,
+    "code": "TCGA-GBM",
+    "origin": "Neuroepithelial"
+  },
+  {
+    "name": "Melanoma",
+    "supported_by_model": true,
+    "description": "An aggressive skin cancer that originates in pigment-producing cells called melanocytes.",
+    "tissue": "Skin",
+    "aggressiveness_score": 0.85,
+    "code": "TCGA-SKCM",
+    "origin": "Melanocytes"
+  },
+  {
+    "name": "Squamous Cell Carcinoma",
+    "supported_by_model": false,
+    "description": "A cancer that arises in flat squamous cells, commonly found in the head, neck, and lungs.",
+    "tissue": "Head and Neck",
+    "aggressiveness_score": 0.65,
+    "code": "TCGA-HNSC",
+    "origin": "Epithelial"
+  },
+  {
+    "name": "Ductal Carcinoma",
+    "supported_by_model": false,
+    "description": "The most common type of breast cancer, originating in the milk ducts of the breast tissue.",
+    "tissue": "Breast",
+    "aggressiveness_score": 0.6,
+    "code": "TCGA-BRCA",
+    "origin": "Epithelial"
+  },
+  {
+    "name": "Mesothelioma",
+    "supported_by_model": false,
+    "description": "A rare and aggressive cancer linked to asbestos exposure, affecting the lining of the lungs.",
+    "tissue": "Lung Lining",
+    "aggressiveness_score": 0.75,
+    "code": "TCGA-MESO",
+    "origin": "Mesothelial"
+  },
+  {
+    "name": "Neuroblastoma",
+    "supported_by_model": false,
+    "description": "A cancer that arises in immature nerve cells and most commonly affects infants and children.",
+    "tissue": "Nervous System (PNS)",
+    "aggressiveness_score": 0.7,
+    "code": "N/A",
+    "origin": "Neural crest cells"
+  },
+  {
+    "name": "Thymoma",
+    "supported_by_model": false,
+    "description": "A tumor originating in the thymus gland, often associated with autoimmune diseases like myasthenia gravis.",
+    "tissue": "Thymus",
+    "aggressiveness_score": 0.6,
+    "code": "TCGA-THYM",
+    "origin": "Epithelial"
+  },
+  {
+    "name": "Breast Cancer",
+    "supported_by_model": true,
+    "description": "A broad category of cancers arising from breast tissue, including ductal and lobular carcinomas.",
+    "tissue": "Breast",
+    "aggressiveness_score": 0.65,
+    "code": "TCGA-BRCA",
+    "origin": "Epithelial"
+  },
+  {
+    "name": "Lung Adenocarcinoma",
+    "supported_by_model": true,
+    "description": "A common subtype of lung cancer originating in glandular cells of the lung tissue.",
+    "tissue": "Lung",
+    "aggressiveness_score": 0.7,
+    "code": "TCGA-LUAD",
+    "origin": "Epithelial"
+  },
+  {
+    "name": "Lung Squamous Cell Carcinoma",
+    "supported_by_model": false,
+    "description": "A form of lung cancer that starts in the squamous cells lining the airways.",
+    "tissue": "Lung",
+    "aggressiveness_score": 0.68,
+    "code": "TCGA-LUSC",
+    "origin": "Epithelial"
+  },
+  {
+    "name": "Colon Adenocarcinoma",
+    "supported_by_model": true,
+    "description": "A common colon cancer arising from glandular cells lining the colon.",
+    "tissue": "Colon",
+    "aggressiveness_score": 0.6,
+    "code": "TCGA-COAD",
+    "origin": "Epithelial"
+  },
+  {
+    "name": "Rectal Adenocarcinoma",
+    "supported_by_model": false,
+    "description": "Cancer originating from glandular cells in the rectum, similar to colon adenocarcinoma.",
+    "tissue": "Rectum",
+    "aggressiveness_score": 0.6,
+    "code": "N/A",
+    "origin": "Epithelial"
+  },
+  {
+    "name": "Prostate Cancer",
+    "supported_by_model": true,
+    "description": "A common cancer affecting the prostate gland in males.",
+    "tissue": "Prostate",
+    "aggressiveness_score": 0.55,
+    "code": "TCGA-PRAD",
+    "origin": "Epithelial"
+  },
+  {
+    "name": "Liver Hepatocellular Carcinoma",
+    "supported_by_model": false,
+    "description": "The most common type of primary liver cancer originating from hepatocytes.",
+    "tissue": "Liver",
+    "aggressiveness_score": 0.75,
+    "code": "TCGA-LIHC",
+    "origin": "Hepatocytes"
+  },
+  {
+    "name": "Stomach Adenocarcinoma",
+    "supported_by_model": false,
+    "description": "A cancer that originates in the glandular cells of the stomach lining.",
+    "tissue": "Stomach",
+    "aggressiveness_score": 0.65,
+    "code": "TCGA-STAD",
+    "origin": "Epithelial"
+  },
+  {
+    "name": "Pancreatic Adenocarcinoma",
+    "supported_by_model": false,
+    "description": "A highly aggressive cancer that begins in the pancreatic ducts.",
+    "tissue": "Pancreas",
+    "aggressiveness_score": 0.85,
+    "code": "TCGA-PAAD",
+    "origin": "Epithelial"
+  },
+  {
+    "name": "Bladder Urothelial Carcinoma",
+    "supported_by_model": false,
+    "description": "A cancer originating in the urothelial cells lining the bladder.",
+    "tissue": "Bladder",
+    "aggressiveness_score": 0.65,
+    "code": "TCGA-BLCA",
+    "origin": "Urothelial"
+  },
+  {
+    "name": "Kidney Renal Clear Cell Carcinoma",
+    "supported_by_model": false,
+    "description": "The most common type of kidney cancer, arising from the lining of kidney tubules.",
+    "tissue": "Kidney",
+    "aggressiveness_score": 0.7,
+    "code": "TCGA-KIRC",
+    "origin": "Epithelial"
+  },
+  {
+    "name": "Lymphoma (DLBCL)",
+    "supported_by_model": false,
+    "description": "Diffuse large B-cell lymphoma, an aggressive cancer of the lymphatic system.",
+    "tissue": "Lymphatic System",
+    "aggressiveness_score": 0.75,
+    "code": "N/A",
+    "origin": "B cells"
+  },
+  {
+    "name": "Ovarian Serous Cystadenocarcinoma",
+    "supported_by_model": true,
+    "description": "The most common type of ovarian cancer, originating from the serous epithelium.",
+    "tissue": "Ovary",
+    "aggressiveness_score": 0.7,
+    "code": "TCGA-OV",
+    "origin": "Epithelial"
+  },
+  {
+    "name": "Cervical Squamous Cell Carcinoma",
+    "supported_by_model": false,
+    "description": "A cancer arising from the squamous cells of the cervix.",
+    "tissue": "Cervix",
+    "aggressiveness_score": 0.6,
+    "code": "TCGA-CESC",
+    "origin": "Epithelial"
+  },
+  {
+    "name": "Esophageal Carcinoma",
+    "supported_by_model": false,
+    "description": "Cancer that forms in the tissues lining the esophagus.",
+    "tissue": "Esophagus",
+    "aggressiveness_score": 0.65,
+    "code": "TCGA-ESCA",
+    "origin": "Epithelial"
+  },
+  {
+    "name": "Head and Neck Squamous Cell Carcinoma",
+    "supported_by_model": false,
+    "description": "A cancer affecting the squamous cells in the head and neck region.",
+    "tissue": "Head and Neck",
+    "aggressiveness_score": 0.65,
+    "code": "TCGA-HNSC",
+    "origin": "Epithelial"
+  },
+  {
+    "name": "Thyroid Carcinoma",
+    "supported_by_model": false,
+    "description": "A cancer that develops in the thyroid gland's follicular cells.",
+    "tissue": "Thyroid",
+    "aggressiveness_score": 0.55,
+    "code": "TCGA-THCA",
+    "origin": "Follicular Cells"
+  }
+]

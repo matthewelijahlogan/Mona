@@ -1,0 +1,17 @@
+__pycache__/
+*.py[cod]
+.DS_Store
+.venv/
+.env
+.env.*
+render-data/
+mobile/.expo/
+mobile/dist/
+mobile/node_modules/
+mobile/.gradle-user-home/
+mobile/android/.gradle/
+mobile/android/build/
+mobile/android/app/build/
+mobile/keystore.properties
+mobile/android/app/*.keystore
+mobile/android/app/*.jks

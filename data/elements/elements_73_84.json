@@ -1,0 +1,110 @@
+[
+  {
+    "name": "Tantalum",
+    "symbol": "Ta",
+    "atomic_number": 73,
+    "group": "Transition Metal",
+    "type": "Metal",
+    "bio_activity": "Biocompatible",
+    "description": "Used in medical implants due to corrosion resistance and biocompatibility."
+  },
+  {
+    "name": "Tungsten",
+    "symbol": "W",
+    "atomic_number": 74,
+    "group": "Transition Metal",
+    "type": "Metal",
+    "bio_activity": "Unknown",
+    "description": "High-density metal with limited biological role."
+  },
+  {
+    "name": "Rhenium",
+    "symbol": "Re",
+    "atomic_number": 75,
+    "group": "Transition Metal",
+    "type": "Metal",
+    "bio_activity": "Unknown",
+    "description": "Limited biological data; studied for catalytic properties."
+  },
+  {
+    "name": "Osmium",
+    "symbol": "Os",
+    "atomic_number": 76,
+    "group": "Transition Metal",
+    "type": "Metal",
+    "bio_activity": "Toxic",
+    "description": "Highly toxic; limited biomedical applications."
+  },
+  {
+    "name": "Iridium",
+    "symbol": "Ir",
+    "atomic_number": 77,
+    "group": "Transition Metal",
+    "type": "Metal",
+    "bio_activity": "Unknown",
+    "description": "Limited biological role; studied for catalytic properties."
+  },
+  {
+    "name": "Platinum",
+    "symbol": "Pt",
+    "atomic_number": 78,
+    "group": "Transition Metal",
+    "type": "Metal",
+    "bio_activity": "Therapeutic",
+    "description": "Widely used in chemotherapy drugs such as cisplatin."
+  },
+  {
+    "name": "Gold",
+    "symbol": "Au",
+    "atomic_number": 79,
+    "group": "Transition Metal",
+    "type": "Metal",
+    "bio_activity": "Therapeutic Potential",
+    "description": "Studied for anticancer properties and drug delivery."
+  },
+  {
+    "name": "Mercury",
+    "symbol": "Hg",
+    "atomic_number": 80,
+    "group": "Transition Metal",
+    "type": "Metal",
+    "bio_activity": "Toxic",
+    "description": "Highly toxic metal with no therapeutic role; exposure linked to health risks."
+  },
+  {
+    "name": "Thallium",
+    "symbol": "Tl",
+    "atomic_number": 81,
+    "group": "Post-transition Metal",
+    "type": "Metal",
+    "bio_activity": "Toxic",
+    "description": "Toxic element with limited biological use."
+  },
+  {
+    "name": "Lead",
+    "symbol": "Pb",
+    "atomic_number": 82,
+    "group": "Post-transition Metal",
+    "type": "Metal",
+    "bio_activity": "Toxic",
+    "description": "Known carcinogen; no biological role."
+  },
+  {
+    "name": "Bismuth",
+    "symbol": "Bi",
+    "atomic_number": 83,
+    "group": "Post-transition Metal",
+    "type": "Metal",
+    "bio_activity": "Therapeutic Potential",
+    "description": "Used in some medical treatments; low toxicity."
+  },
+  {
+    "name": "Polonium",
+    "symbol": "Po",
+    "atomic_number": 84,
+    "group": "Post-transition Metal",
+    "type": "Metal",
+    "bio_activity": "Radioactive",
+    "description": "Radioactive and highly toxic; no biological role."
+  }
+]

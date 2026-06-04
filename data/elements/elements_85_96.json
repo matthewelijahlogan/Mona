@@ -1,0 +1,110 @@
+[
+  {
+    "name": "Astatine",
+    "symbol": "At",
+    "atomic_number": 85,
+    "group": "Halogen",
+    "type": "Metalloid",
+    "bio_activity": "Radioactive",
+    "description": "Rare, radioactive halogen; studied for targeted alpha therapy."
+  },
+  {
+    "name": "Radon",
+    "symbol": "Rn",
+    "atomic_number": 86,
+    "group": "Noble Gas",
+    "type": "Nonmetal",
+    "bio_activity": "Radioactive",
+    "description": "Radioactive noble gas; exposure linked to lung cancer."
+  },
+  {
+    "name": "Francium",
+    "symbol": "Fr",
+    "atomic_number": 87,
+    "group": "Alkali Metal",
+    "type": "Metal",
+    "bio_activity": "Radioactive",
+    "description": "Highly radioactive alkali metal with no biological role."
+  },
+  {
+    "name": "Radium",
+    "symbol": "Ra",
+    "atomic_number": 88,
+    "group": "Alkaline Earth Metal",
+    "type": "Metal",
+    "bio_activity": "Radioactive",
+    "description": "Used historically in radiotherapy; radioactive and toxic."
+  },
+  {
+    "name": "Actinium",
+    "symbol": "Ac",
+    "atomic_number": 89,
+    "group": "Actinide",
+    "type": "Metal",
+    "bio_activity": "Radioactive",
+    "description": "Radioactive element with potential applications in nuclear medicine."
+  },
+  {
+    "name": "Thorium",
+    "symbol": "Th",
+    "atomic_number": 90,
+    "group": "Actinide",
+    "type": "Metal",
+    "bio_activity": "Radioactive",
+    "description": "Radioactive actinide with limited biological role."
+  },
+  {
+    "name": "Protactinium",
+    "symbol": "Pa",
+    "atomic_number": 91,
+    "group": "Actinide",
+    "type": "Metal",
+    "bio_activity": "Radioactive",
+    "description": "Rare radioactive element with no biological role."
+  },
+  {
+    "name": "Uranium",
+    "symbol": "U",
+    "atomic_number": 92,
+    "group": "Actinide",
+    "type": "Metal",
+    "bio_activity": "Radioactive",
+    "description": "Radioactive element used in nuclear medicine and radiotherapy."
+  },
+  {
+    "name": "Neptunium",
+    "symbol": "Np",
+    "atomic_number": 93,
+    "group": "Actinide",
+    "type": "Metal",
+    "bio_activity": "Radioactive",
+    "description": "Radioactive actinide with no biological role."
+  },
+  {
+    "name": "Plutonium",
+    "symbol": "Pu",
+    "atomic_number": 94,
+    "group": "Actinide",
+    "type": "Metal",
+    "bio_activity": "Radioactive",
+    "description": "Radioactive element with no biological role; used in nuclear energy."
+  },
+  {
+    "name": "Americium",
+    "symbol": "Am",
+    "atomic_number": 95,
+    "group": "Actinide",
+    "type": "Metal",
+    "bio_activity": "Radioactive",
+    "description": "Radioactive element used in smoke detectors; no biological role."
+  },
+  {
+    "name": "Curium",
+    "symbol": "Cm",
+    "atomic_number": 96,
+    "group": "Actinide",
+    "type": "Metal",
+    "bio_activity": "Radioactive",
+    "description": "Radioactive actinide with no biological role."
+  }
+]

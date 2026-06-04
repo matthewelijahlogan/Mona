@@ -1,0 +1,110 @@
+[
+  {
+    "name": "Rubidium",
+    "symbol": "Rb",
+    "atomic_number": 37,
+    "group": "Alkali Metal",
+    "type": "Metal",
+    "bio_activity": "Unknown",
+    "description": "Limited biological role; similar properties to potassium."
+  },
+  {
+    "name": "Strontium",
+    "symbol": "Sr",
+    "atomic_number": 38,
+    "group": "Alkaline Earth Metal",
+    "type": "Metal",
+    "bio_activity": "Variable",
+    "description": "Strontium compounds used in bone-related treatments; some radioactive isotopes used in cancer therapy."
+  },
+  {
+    "name": "Yttrium",
+    "symbol": "Y",
+    "atomic_number": 39,
+    "group": "Transition Metal",
+    "type": "Metal",
+    "bio_activity": "Unknown",
+    "description": "Used in cancer treatments such as radioisotope therapy."
+  },
+  {
+    "name": "Zirconium",
+    "symbol": "Zr",
+    "atomic_number": 40,
+    "group": "Transition Metal",
+    "type": "Metal",
+    "bio_activity": "Biocompatible",
+    "description": "Used in medical implants; biologically inert."
+  },
+  {
+    "name": "Niobium",
+    "symbol": "Nb",
+    "atomic_number": 41,
+    "group": "Transition Metal",
+    "type": "Metal",
+    "bio_activity": "Unknown",
+    "description": "Limited biological data; studied for biomedical applications."
+  },
+  {
+    "name": "Molybdenum",
+    "symbol": "Mo",
+    "atomic_number": 42,
+    "group": "Transition Metal",
+    "type": "Metal",
+    "bio_activity": "Essential",
+    "description": "Trace element important for enzyme function."
+  },
+  {
+    "name": "Technetium",
+    "symbol": "Tc",
+    "atomic_number": 43,
+    "group": "Transition Metal",
+    "type": "Metal",
+    "bio_activity": "Radioactive",
+    "description": "Used in diagnostic imaging; radioactive with therapeutic potential."
+  },
+  {
+    "name": "Ruthenium",
+    "symbol": "Ru",
+    "atomic_number": 44,
+    "group": "Transition Metal",
+    "type": "Metal",
+    "bio_activity": "Therapeutic Potential",
+    "description": "Studied for anticancer properties in experimental drugs."
+  },
+  {
+    "name": "Rhodium",
+    "symbol": "Rh",
+    "atomic_number": 45,
+    "group": "Transition Metal",
+    "type": "Metal",
+    "bio_activity": "Unknown",
+    "description": "Limited biological role; research ongoing."
+  },
+  {
+    "name": "Palladium",
+    "symbol": "Pd",
+    "atomic_number": 46,
+    "group": "Transition Metal",
+    "type": "Metal",
+    "bio_activity": "Therapeutic Potential",
+    "description": "Used in some experimental chemotherapy complexes."
+  },
+  {
+    "name": "Silver",
+    "symbol": "Ag",
+    "atomic_number": 47,
+    "group": "Transition Metal",
+    "type": "Metal",
+    "bio_activity": "Antimicrobial",
+    "description": "Known for antimicrobial properties; studied for wound healing."
+  },
+  {
+    "name": "Cadmium",
+    "symbol": "Cd",
+    "atomic_number": 48,
+    "group": "Transition Metal",
+    "type": "Metal",
+    "bio_activity": "Toxic",
+    "description": "Highly toxic and carcinogenic; exposure linked to cancer risk."
+  }
+]

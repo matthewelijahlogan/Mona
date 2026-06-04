@@ -1,0 +1,110 @@
+[
+  {
+    "name": "Manganese",
+    "symbol": "Mn",
+    "atomic_number": 25,
+    "group": "Transition Metal",
+    "type": "Metal",
+    "bio_activity": "Essential",
+    "description": "Trace element important for enzyme function and antioxidant defense."
+  },
+  {
+    "name": "Iron",
+    "symbol": "Fe",
+    "atomic_number": 26,
+    "group": "Transition Metal",
+    "type": "Metal",
+    "bio_activity": "Essential",
+    "description": "Vital for oxygen transport; iron oxide nanoparticles are studied for imaging and therapy."
+  },
+  {
+    "name": "Cobalt",
+    "symbol": "Co",
+    "atomic_number": 27,
+    "group": "Transition Metal",
+    "type": "Metal",
+    "bio_activity": "Essential",
+    "description": "Component of vitamin B12; essential but toxic in high amounts."
+  },
+  {
+    "name": "Nickel",
+    "symbol": "Ni",
+    "atomic_number": 28,
+    "group": "Transition Metal",
+    "type": "Metal",
+    "bio_activity": "Variable",
+    "description": "Essential trace element but some compounds are carcinogenic."
+  },
+  {
+    "name": "Copper",
+    "symbol": "Cu",
+    "atomic_number": 29,
+    "group": "Transition Metal",
+    "type": "Metal",
+    "bio_activity": "Variable",
+    "description": "Copper imbalance is linked to cancer progression; targeted chelation is studied."
+  },
+  {
+    "name": "Zinc",
+    "symbol": "Zn",
+    "atomic_number": 30,
+    "group": "Transition Metal",
+    "type": "Metal",
+    "bio_activity": "Essential",
+    "description": "Important for immune function, DNA repair, and enzyme activity."
+  },
+  {
+    "name": "Gallium",
+    "symbol": "Ga",
+    "atomic_number": 31,
+    "group": "Post-transition Metal",
+    "type": "Metal",
+    "bio_activity": "Therapeutic Potential",
+    "description": "Used experimentally in cancer treatment for its ability to disrupt iron metabolism."
+  },
+  {
+    "name": "Germanium",
+    "symbol": "Ge",
+    "atomic_number": 32,
+    "group": "Metalloid",
+    "type": "Metalloid",
+    "bio_activity": "Unknown",
+    "description": "Limited biological role; sometimes used in alternative medicine without proven benefits."
+  },
+  {
+    "name": "Arsenic",
+    "symbol": "As",
+    "atomic_number": 33,
+    "group": "Metalloid",
+    "type": "Toxic Metalloid",
+    "bio_activity": "High",
+    "description": "Used in arsenic trioxide chemotherapy for leukemia."
+  },
+  {
+    "name": "Selenium",
+    "symbol": "Se",
+    "atomic_number": 34,
+    "group": "Nonmetal",
+    "type": "Nonmetal",
+    "bio_activity": "Essential",
+    "description": "Trace element with antioxidant properties; studied for cancer prevention."
+  },
+  {
+    "name": "Bromine",
+    "symbol": "Br",
+    "atomic_number": 35,
+    "group": "Halogen",
+    "type": "Nonmetal",
+    "bio_activity": "Variable",
+    "description": "Limited biological role; compounds can be toxic."
+  },
+  {
+    "name": "Krypton",
+    "symbol": "Kr",
+    "atomic_number": 36,
+    "group": "Noble Gas",
+    "type": "Nonmetal",
+    "bio_activity": "Inert",
+    "description": "Chemically inert and biologically inactive."
+  }
+]

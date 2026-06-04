@@ -1,0 +1,14 @@
+services:
+  - type: web
+    name: mona-cancer-api
+    runtime: python
+    plan: free
+    branch: main
+    buildCommand: pip install -r requirements.minimal.txt
+    startCommand: uvicorn main:app --host 0.0.0.0 --port $PORT
+    healthCheckPath: /status
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.11.9
+      - key: MONA_LEADERBOARD_PATH
+        value: /opt/render/project/src/render-data/recipe_leaderboard.json

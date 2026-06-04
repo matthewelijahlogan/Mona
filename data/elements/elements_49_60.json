@@ -1,0 +1,110 @@
+[
+  {
+    "name": "Indium",
+    "symbol": "In",
+    "atomic_number": 49,
+    "group": "Post-transition Metal",
+    "type": "Metal",
+    "bio_activity": "Unknown",
+    "description": "Limited biological role; used in some medical imaging agents."
+  },
+  {
+    "name": "Tin",
+    "symbol": "Sn",
+    "atomic_number": 50,
+    "group": "Post-transition Metal",
+    "type": "Metal",
+    "bio_activity": "Low Toxicity",
+    "description": "Generally low toxicity; used in some medical alloys."
+  },
+  {
+    "name": "Antimony",
+    "symbol": "Sb",
+    "atomic_number": 51,
+    "group": "Metalloid",
+    "type": "Metalloid",
+    "bio_activity": "Toxic",
+    "description": "Toxic element; some antimony compounds studied for anticancer effects."
+  },
+  {
+    "name": "Tellurium",
+    "symbol": "Te",
+    "atomic_number": 52,
+    "group": "Metalloid",
+    "type": "Metalloid",
+    "bio_activity": "Toxic",
+    "description": "Toxic metalloid with limited biological role."
+  },
+  {
+    "name": "Iodine",
+    "symbol": "I",
+    "atomic_number": 53,
+    "group": "Halogen",
+    "type": "Nonmetal",
+    "bio_activity": "Essential",
+    "description": "Vital for thyroid function; radioactive isotopes used in cancer treatment."
+  },
+  {
+    "name": "Xenon",
+    "symbol": "Xe",
+    "atomic_number": 54,
+    "group": "Noble Gas",
+    "type": "Nonmetal",
+    "bio_activity": "Inert",
+    "description": "Chemically inert; some anesthetic uses."
+  },
+  {
+    "name": "Cesium",
+    "symbol": "Cs",
+    "atomic_number": 55,
+    "group": "Alkali Metal",
+    "type": "Metal",
+    "bio_activity": "Unknown",
+    "description": "Radioactive isotopes used in radiotherapy."
+  },
+  {
+    "name": "Barium",
+    "symbol": "Ba",
+    "atomic_number": 56,
+    "group": "Alkaline Earth Metal",
+    "type": "Metal",
+    "bio_activity": "Toxic",
+    "description": "Radioactive isotopes used in cancer treatment; non-radioactive forms are toxic."
+  },
+  {
+    "name": "Lanthanum",
+    "symbol": "La",
+    "atomic_number": 57,
+    "group": "Lanthanide",
+    "type": "Metal",
+    "bio_activity": "Unknown",
+    "description": "Used in some imaging agents; limited biological role."
+  },
+  {
+    "name": "Cerium",
+    "symbol": "Ce",
+    "atomic_number": 58,
+    "group": "Lanthanide",
+    "type": "Metal",
+    "bio_activity": "Unknown",
+    "description": "Studied for antioxidant properties in experimental therapies."
+  },
+  {
+    "name": "Praseodymium",
+    "symbol": "Pr",
+    "atomic_number": 59,
+    "group": "Lanthanide",
+    "type": "Metal",
+    "bio_activity": "Unknown",
+    "description": "Limited biological data; experimental uses under research."
+  },
+  {
+    "name": "Neodymium",
+    "symbol": "Nd",
+    "atomic_number": 60,
+    "group": "Lanthanide",
+    "type": "Metal",
+    "bio_activity": "Unknown",
+    "description": "Used in magnets; no known biological role."
+  }
+]

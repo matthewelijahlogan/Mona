@@ -1,0 +1,110 @@
+[
+  {
+    "name": "Promethium",
+    "symbol": "Pm",
+    "atomic_number": 61,
+    "group": "Lanthanide",
+    "type": "Metal",
+    "bio_activity": "Radioactive",
+    "description": "Radioactive lanthanide with no stable isotopes; limited biological role."
+  },
+  {
+    "name": "Samarium",
+    "symbol": "Sm",
+    "atomic_number": 62,
+    "group": "Lanthanide",
+    "type": "Metal",
+    "bio_activity": "Therapeutic Potential",
+    "description": "Used in cancer radiotherapy and experimental treatments."
+  },
+  {
+    "name": "Europium",
+    "symbol": "Eu",
+    "atomic_number": 63,
+    "group": "Lanthanide",
+    "type": "Metal",
+    "bio_activity": "Unknown",
+    "description": "Limited biological role; used in lighting and lasers."
+  },
+  {
+    "name": "Gadolinium",
+    "symbol": "Gd",
+    "atomic_number": 64,
+    "group": "Lanthanide",
+    "type": "Metal",
+    "bio_activity": "Medical Use",
+    "description": "Used as MRI contrast agent; some toxicity concerns."
+  },
+  {
+    "name": "Terbium",
+    "symbol": "Tb",
+    "atomic_number": 65,
+    "group": "Lanthanide",
+    "type": "Metal",
+    "bio_activity": "Unknown",
+    "description": "Limited biological role; used in electronics and lighting."
+  },
+  {
+    "name": "Dysprosium",
+    "symbol": "Dy",
+    "atomic_number": 66,
+    "group": "Lanthanide",
+    "type": "Metal",
+    "bio_activity": "Unknown",
+    "description": "Used in magnets; no known biological role."
+  },
+  {
+    "name": "Holmium",
+    "symbol": "Ho",
+    "atomic_number": 67,
+    "group": "Lanthanide",
+    "type": "Metal",
+    "bio_activity": "Medical Use",
+    "description": "Used in some cancer therapies and MRI imaging."
+  },
+  {
+    "name": "Erbium",
+    "symbol": "Er",
+    "atomic_number": 68,
+    "group": "Lanthanide",
+    "type": "Metal",
+    "bio_activity": "Unknown",
+    "description": "Used in lasers; limited biological significance."
+  },
+  {
+    "name": "Thulium",
+    "symbol": "Tm",
+    "atomic_number": 69,
+    "group": "Lanthanide",
+    "type": "Metal",
+    "bio_activity": "Radioactive",
+    "description": "Rare, radioactive lanthanide; limited biological role."
+  },
+  {
+    "name": "Ytterbium",
+    "symbol": "Yb",
+    "atomic_number": 70,
+    "group": "Lanthanide",
+    "type": "Metal",
+    "bio_activity": "Unknown",
+    "description": "Used in some medical imaging; biological effects unclear."
+  },
+  {
+    "name": "Lutetium",
+    "symbol": "Lu",
+    "atomic_number": 71,
+    "group": "Lanthanide",
+    "type": "Metal",
+    "bio_activity": "Therapeutic Potential",
+    "description": "Used in targeted radionuclide therapy."
+  },
+  {
+    "name": "Hafnium",
+    "symbol": "Hf",
+    "atomic_number": 72,
+    "group": "Transition Metal",
+    "type": "Metal",
+    "bio_activity": "Unknown",
+    "description": "Limited biological role; studied for biomedical applications."
+  }
+]

@@ -1,0 +1,110 @@
+[
+  {
+    "name": "Berkelium",
+    "symbol": "Bk",
+    "atomic_number": 97,
+    "group": "Actinide",
+    "type": "Metal",
+    "bio_activity": "Radioactive",
+    "description": "Radioactive element with no biological role."
+  },
+  {
+    "name": "Californium",
+    "symbol": "Cf",
+    "atomic_number": 98,
+    "group": "Actinide",
+    "type": "Metal",
+    "bio_activity": "Radioactive",
+    "description": "Used in neutron sources; no biological role."
+  },
+  {
+    "name": "Einsteinium",
+    "symbol": "Es",
+    "atomic_number": 99,
+    "group": "Actinide",
+    "type": "Metal",
+    "bio_activity": "Radioactive",
+    "description": "Radioactive, synthetic element with no biological role."
+  },
+  {
+    "name": "Fermium",
+    "symbol": "Fm",
+    "atomic_number": 100,
+    "group": "Actinide",
+    "type": "Metal",
+    "bio_activity": "Radioactive",
+    "description": "Radioactive, synthetic element with no biological role."
+  },
+  {
+    "name": "Mendelevium",
+    "symbol": "Md",
+    "atomic_number": 101,
+    "group": "Actinide",
+    "type": "Metal",
+    "bio_activity": "Radioactive",
+    "description": "Radioactive, synthetic element with no biological role."
+  },
+  {
+    "name": "Nobelium",
+    "symbol": "No",
+    "atomic_number": 102,
+    "group": "Actinide",
+    "type": "Metal",
+    "bio_activity": "Radioactive",
+    "description": "Radioactive, synthetic element with no biological role."
+  },
+  {
+    "name": "Lawrencium",
+    "symbol": "Lr",
+    "atomic_number": 103,
+    "group": "Actinide",
+    "type": "Metal",
+    "bio_activity": "Radioactive",
+    "description": "Radioactive, synthetic element with no biological role."
+  },
+  {
+    "name": "Rutherfordium",
+    "symbol": "Rf",
+    "atomic_number": 104,
+    "group": "Transition Metal",
+    "type": "Metal",
+    "bio_activity": "Unknown",
+    "description": "Synthetic element with unknown biological effects."
+  },
+  {
+    "name": "Dubnium",
+    "symbol": "Db",
+    "atomic_number": 105,
+    "group": "Transition Metal",
+    "type": "Metal",
+    "bio_activity": "Unknown",
+    "description": "Synthetic element with unknown biological effects."
+  },
+  {
+    "name": "Seaborgium",
+    "symbol": "Sg",
+    "atomic_number": 106,
+    "group": "Transition Metal",
+    "type": "Metal",
+    "bio_activity": "Unknown",
+    "description": "Synthetic element with unknown biological effects."
+  },
+  {
+    "name": "Bohrium",
+    "symbol": "Bh",
+    "atomic_number": 107,
+    "group": "Transition Metal",
+    "type": "Metal",
+    "bio_activity": "Unknown",
+    "description": "Synthetic element with unknown biological effects."
+  },
+  {
+    "name": "Hassium",
+    "symbol": "Hs",
+    "atomic_number": 108,
+    "group": "Transition Metal",
+    "type": "Metal",
+    "bio_activity": "Unknown",
+    "description": "Synthetic element with unknown biological effects."
+  }
+]

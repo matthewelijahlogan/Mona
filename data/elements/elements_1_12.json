@@ -1,0 +1,110 @@
+[
+  {
+    "name": "Hydrogen",
+    "symbol": "H",
+    "atomic_number": 1,
+    "group": "Nonmetal",
+    "type": "Nonmetal",
+    "bio_activity": "Neutral",
+    "description": "Hydrogen is a basic element essential to life, forms water and organic compounds."
+  },
+  {
+    "name": "Helium",
+    "symbol": "He",
+    "atomic_number": 2,
+    "group": "Noble Gas",
+    "type": "Nonmetal",
+    "bio_activity": "Inert",
+    "description": "Helium is chemically inert and biologically non-reactive."
+  },
+  {
+    "name": "Lithium",
+    "symbol": "Li",
+    "atomic_number": 3,
+    "group": "Alkali Metal",
+    "type": "Metal",
+    "bio_activity": "Therapeutic",
+    "description": "Used in psychiatry; its biological effects are under study for cancer therapy."
+  },
+  {
+    "name": "Beryllium",
+    "symbol": "Be",
+    "atomic_number": 4,
+    "group": "Alkaline Earth Metal",
+    "type": "Metal",
+    "bio_activity": "Toxic",
+    "description": "Toxic metal with limited biological role, exposure linked to lung disease."
+  },
+  {
+    "name": "Boron",
+    "symbol": "B",
+    "atomic_number": 5,
+    "group": "Metalloid",
+    "type": "Metalloid",
+    "bio_activity": "Therapeutic Potential",
+    "description": "Used in boron neutron capture therapy, an experimental cancer treatment."
+  },
+  {
+    "name": "Carbon",
+    "symbol": "C",
+    "atomic_number": 6,
+    "group": "Nonmetal",
+    "type": "Nonmetal",
+    "bio_activity": "Neutral",
+    "description": "Basis of all organic life; carbon nanomaterials are studied for drug delivery."
+  },
+  {
+    "name": "Nitrogen",
+    "symbol": "N",
+    "atomic_number": 7,
+    "group": "Nonmetal",
+    "type": "Nonmetal",
+    "bio_activity": "Neutral",
+    "description": "Essential element in amino acids and nucleic acids."
+  },
+  {
+    "name": "Oxygen",
+    "symbol": "O",
+    "atomic_number": 8,
+    "group": "Nonmetal",
+    "type": "Nonmetal",
+    "bio_activity": "Supportive",
+    "description": "Critical for cell metabolism and oxygenation; hypoxia influences tumor growth."
+  },
+  {
+    "name": "Fluorine",
+    "symbol": "F",
+    "atomic_number": 9,
+    "group": "Halogen",
+    "type": "Nonmetal",
+    "bio_activity": "Toxic",
+    "description": "Highly reactive and toxic; used in pharmaceuticals but harmful in excess."
+  },
+  {
+    "name": "Neon",
+    "symbol": "Ne",
+    "atomic_number": 10,
+    "group": "Noble Gas",
+    "type": "Nonmetal",
+    "bio_activity": "Inert",
+    "description": "Chemically inert, no known biological activity."
+  },
+  {
+    "name": "Sodium",
+    "symbol": "Na",
+    "atomic_number": 11,
+    "group": "Alkali Metal",
+    "type": "Metal",
+    "bio_activity": "Essential",
+    "description": "Vital electrolyte for nerve and muscle function."
+  },
+  {
+    "name": "Magnesium",
+    "symbol": "Mg",
+    "atomic_number": 12,
+    "group": "Alkaline Earth Metal",
+    "type": "Metal",
+    "bio_activity": "Supportive",
+    "description": "Important for DNA repair and cell function."
+  }
+]
