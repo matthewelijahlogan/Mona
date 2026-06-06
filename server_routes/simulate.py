@@ -11,8 +11,20 @@ from logic.simulate_interaction import simulate_all_elements_for_cancer
 router = APIRouter()
 
 SYNTHETIC_SCORES_PATH = "data/synthetic_element_scores.csv"
-elements_data = load_all_elements()
-cancer_types = load_cancer_types()
+elements_data = None
+cancer_types = None
+
+
+def get_runtime_data():
+    global elements_data, cancer_types
+
+    if elements_data is None:
+        elements_data = load_all_elements()
+
+    if cancer_types is None:
+        cancer_types = load_cancer_types()
+
+    return elements_data, cancer_types
 
 class SimulateRequest(BaseModel):
     element: str
@@ -28,11 +40,13 @@ def simulate(req: SimulateRequest):
         raise HTTPException(status_code=400, detail="Missing element or cancer type")
     # fallback to your existing simulate_interaction if you still need it
     from logic.simulate_interaction import simulate_interaction
+    elements_data, cancer_types = get_runtime_data()
     return simulate_interaction(req.element, req.type, elements_data, cancer_types)
 
 @router.post("/simulate-all-elements")
 def simulate_all_elements(req: SimulateAllElementsRequest):
     try:
+        elements_data, cancer_types = get_runtime_data()
         cancer_type = req.cancer_type.strip()
         if cancer_type not in DYNAMIC_CANCER_TYPE_MAP:
             raise HTTPException(status_code=400, detail=f"Unknown cancer type: '{cancer_type}'")

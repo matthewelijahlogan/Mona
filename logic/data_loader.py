@@ -1,6 +1,5 @@
 import os
 import json
-import pandas as pd
 
 # Go up one directory from logic to cancer-sim-app root
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -28,7 +27,11 @@ def load_diagnoses():
         return json.load(f)
 
 def load_model_csv():
+    import pandas as pd
+
     return pd.read_csv(os.path.join(DATA_DIR, 'Model.csv'))
 
 def load_mutation_data():
+    import pandas as pd
+
     return pd.read_csv(os.path.join(DATA_DIR, 'OmicsSomaticMutationsProfile.csv'))

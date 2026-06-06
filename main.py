@@ -6,7 +6,7 @@ from typing import List
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 
-from config import DYNAMIC_CANCER_TYPE_MAP, MODEL_PATH, model, predictor_metadata
+from config import DYNAMIC_CANCER_TYPE_MAP, MODEL_PATH, predictor_metadata
 from logic.element_utils import get_elements_data
 from server_routes.leaderboard import router as leaderboard_router
 from server_routes.predict import router as predict_router
@@ -91,8 +91,9 @@ def list_cancer_types():
 def api_status():
     status = {
         "server": "online",
-        "model_loaded": model is not None,
-        "model_path": MODEL_PATH if model is not None else None,
+        "model_loaded": False,
+        "model_file_exists": os.path.exists(MODEL_PATH),
+        "model_path": MODEL_PATH if os.path.exists(MODEL_PATH) else None,
         "periodic_table_exists": os.path.exists(PERIODIC_PATH),
         "cancer_types_loaded": len(cancer_json) > 0,
         "num_cancer_types": len(DYNAMIC_CANCER_TYPE_MAP),
@@ -102,7 +103,7 @@ def api_status():
 
     if all(
         [
-            status["model_loaded"],
+            status["model_file_exists"],
             status["periodic_table_exists"],
             status["cancer_types_loaded"],
         ]

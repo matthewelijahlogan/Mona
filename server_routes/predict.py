@@ -1,11 +1,10 @@
 from bisect import bisect_right
 from typing import List
 
-import pandas as pd
 from fastapi import APIRouter, HTTPException
 from pydantic import BaseModel
 
-from config import ELEMENTS_ORDER, model, predictor_metadata
+from config import DYNAMIC_CANCER_TYPE_MAP, ELEMENTS_ORDER, get_model, predictor_metadata
 
 EXPECTED_FEATURE_COUNT = len(ELEMENTS_ORDER)
 SUPPORTED_CANCER_TYPES = predictor_metadata.get("supported_cancer_types", [])
@@ -43,6 +42,8 @@ def calculate_sensitivity_score(predicted_auc: float) -> tuple[float, float]:
 
 @router.post("/predict")
 def predict_auc(req: PredictRequest):
+    model = get_model()
+
     if model is None:
         raise HTTPException(status_code=500, detail="Model not loaded.")
 
@@ -63,11 +64,13 @@ def predict_auc(req: PredictRequest):
 
     input_payload = {
         **{element: value for element, value in zip(ELEMENTS_ORDER, req.features)},
-        "cancer_type": req.cancer_type,
+        "cancer_type_index": DYNAMIC_CANCER_TYPE_MAP[req.cancer_type],
     }
 
     try:
-        input_df = pd.DataFrame([input_payload], columns=[*ELEMENTS_ORDER, "cancer_type"])
+        import pandas as pd
+
+        input_df = pd.DataFrame([input_payload], columns=[*ELEMENTS_ORDER, "cancer_type_index"])
     except Exception as exc:
         raise HTTPException(
             status_code=500,

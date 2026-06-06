@@ -1,11 +1,12 @@
 # logic/element_utils.py
 import os
-import pandas as pd
 
 def get_elements_data():
     """
     Loads element data from CSV into a list of dictionaries.
     """
+    import pandas as pd
+
     path = os.path.join(os.path.dirname(__file__), "..", "data", "periodic_table.csv")
     return pd.read_csv(path).to_dict(orient="records")
 

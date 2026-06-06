@@ -1,8 +1,6 @@
 from bisect import bisect_right
 
-import pandas as pd
-
-from config import ELEMENTS_ORDER, model, predictor_metadata
+from config import DYNAMIC_CANCER_TYPE_MAP, ELEMENTS_ORDER, get_model, predictor_metadata
 
 EXPECTED_FEATURE_COUNT = len(ELEMENTS_ORDER)
 SUPPORTED_CANCER_TYPES = predictor_metadata.get("supported_cancer_types", [])
@@ -32,6 +30,8 @@ def calculate_sensitivity_score(predicted_auc: float) -> tuple[float, float]:
 
 
 def score_feature_vector(features: list[float], cancer_type: str) -> dict[str, float | str | bool]:
+    model = get_model()
+
     if model is None:
         raise RuntimeError("Model not loaded.")
 
@@ -45,10 +45,12 @@ def score_feature_vector(features: list[float], cancer_type: str) -> dict[str, f
 
     input_payload = {
         **{element: value for element, value in zip(ELEMENTS_ORDER, features)},
-        "cancer_type": cancer_type,
+        "cancer_type_index": DYNAMIC_CANCER_TYPE_MAP[cancer_type],
     }
 
-    input_df = pd.DataFrame([input_payload], columns=[*ELEMENTS_ORDER, "cancer_type"])
+    import pandas as pd
+
+    input_df = pd.DataFrame([input_payload], columns=[*ELEMENTS_ORDER, "cancer_type_index"])
     predicted_auc = float(model.predict(input_df)[0])
     sensitivity_score, auc_percentile = calculate_sensitivity_score(predicted_auc)
     sensitivity_band = get_sensitivity_band(sensitivity_score)

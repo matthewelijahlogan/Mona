@@ -5,7 +5,6 @@ import logging
 from fastapi import APIRouter, HTTPException
 from pydantic import BaseModel
 from typing import List, Dict, Any
-import pandas as pd
 from itertools import combinations
 import random
 
@@ -31,6 +30,8 @@ def get_available_synthetic_cancer_types() -> List[str]:
     if not os.path.exists(DATA_PATH):
         raise HTTPException(status_code=500, detail="Synthetic score file not found.")
     try:
+        import pandas as pd
+
         df = pd.read_csv(DATA_PATH)
         return sorted(df["cancer_type"].dropna().unique().tolist())
     except Exception as e:
@@ -51,11 +52,13 @@ def get_top_synthetic(req: TopSyntheticRequest) -> List[Dict[str, Any]]:
     
     # 2. Get our base elements to work with
     try:
+        import pandas as pd
+
         df = pd.read_csv(DATA_PATH)
         filtered = df[df["cancer_type"].str.strip() == req.cancer_type.strip()]
     except Exception as e:
         logging.error(f"Error loading data: {e}")
-        filtered = pd.DataFrame()
+        filtered = []
 
     elements_data = get_elements_data()
     cancer_data = get_cancer_types_data()
@@ -64,7 +67,7 @@ def get_top_synthetic(req: TopSyntheticRequest) -> List[Dict[str, Any]]:
     tried = set()
 
     # Get the best performing elements for this cancer type or globally
-    if filtered.empty:
+    if len(filtered) == 0:
         # Use global top performers if no specific data
         logging.info(f"No data for cancer type: {req.cancer_type}. Using global top performers.")
         try:

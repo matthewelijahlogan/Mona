@@ -18,20 +18,39 @@ ELEMENTS_ORDER = [
 ]
 
 logger = logging.getLogger(__name__)
+_model = None
+_model_error = None
 
 with open(CANCER_TYPES_PATH, encoding="utf-8") as f:
     cancer_json = json.load(f)
 
-DYNAMIC_CANCER_TYPE_MAP = {
-    entry["name"].strip(): idx for idx, entry in enumerate(cancer_json)
-}
+DYNAMIC_CANCER_TYPE_MAP = {entry["name"].strip(): idx for idx, entry in enumerate(cancer_json)}
 
-try:
-    model = joblib.load(MODEL_PATH)
-    logger.info("Model loaded successfully from %s", MODEL_PATH)
-except Exception as exc:
-    logger.warning("Failed to load model from %s: %s", MODEL_PATH, exc)
-    model = None
+
+def get_model():
+    global _model, _model_error
+
+    if _model is not None:
+        return _model
+
+    if _model_error is not None:
+        return None
+
+    try:
+        # Memory-map the trained model when possible so smaller hosts do not
+        # pull the entire artifact into RAM during startup.
+        _model = joblib.load(MODEL_PATH, mmap_mode="r")
+        logger.info("Model loaded successfully from %s", MODEL_PATH)
+    except Exception as exc:
+        logger.warning("Failed to load model from %s: %s", MODEL_PATH, exc)
+        _model_error = exc
+        _model = None
+
+    return _model
+
+
+def get_model_error():
+    return _model_error
 
 try:
     with open(PREDICTOR_METADATA_PATH, encoding="utf-8") as f:
