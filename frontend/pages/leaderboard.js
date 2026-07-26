@@ -4,6 +4,24 @@ import AppShell from '../components/AppShell'
 
 const fetcher = (url) => fetch(url).then((r) => r.json())
 
+function formatMetric(value) {
+  if (value === null || value === undefined || value === '') return '—'
+  const number = Number(value)
+  if (Number.isFinite(number)) {
+    return number >= 10 ? number.toFixed(0) : number.toFixed(2)
+  }
+  return String(value)
+}
+
+function formatDate(value) {
+  if (!value) return '—'
+  try {
+    return new Date(value).toLocaleString()
+  } catch (error) {
+    return value
+  }
+}
+
 export default function Leaderboard() {
   const { data, error } = useSWR('/api/leaderboard', fetcher)
   const entries = data?.entries || []
@@ -45,21 +63,33 @@ export default function Leaderboard() {
         ) : (
           <ol className="mt-6 space-y-4">
             {entries.map((item, index) => (
-              <li key={item.id || `${item.recipe_name}-${index}`} className="flex flex-col gap-3 rounded-2xl border border-dashed border-mona-blue/40 bg-white/80 p-4 md:flex-row md:items-center md:justify-between">
-                <div>
-                  <div className="flex items-center gap-3">
+              <li key={item.id || `${item.recipe_name}-${index}`} className="flex flex-col gap-4 rounded-2xl border border-dashed border-mona-blue/40 bg-white/85 p-5 md:flex-row md:items-start md:justify-between">
+                <div className="flex-1">
+                  <div className="flex flex-wrap items-center gap-3">
                     <span className="rounded-full border border-dashed border-mona-blue/40 px-3 py-1 text-sm font-semibold text-mona-blue">
                       #{index + 1}
                     </span>
-                    <div className="font-semibold">{item.recipe_name}</div>
+                    <div>
+                      <div className="font-semibold text-lg">{item.recipe_name}</div>
+                      <div className="text-sm text-slate-600">
+                        Submitted by {item.submitted_by || 'anonymous'} • {item.cancer_type || 'targeted profile'}
+                      </div>
+                    </div>
                   </div>
-                  <div className="mt-2 text-sm text-slate-600">
-                    Submitted by {item.submitted_by || 'anonymous'} • {item.cancer_type || 'targeted profile'}
+
+                  <div className="mt-3 flex flex-wrap gap-2">
+                    <span className="mona-chip">{item.formula || 'formula pending'}</span>
+                    <span className="mona-chip">Band {item.sensitivity_band || '—'}</span>
+                    <span className="mona-chip">AUC {formatMetric(item.predicted_auc)}</span>
                   </div>
+
+                  <p className="mt-3 text-sm text-slate-600">Published {formatDate(item.created_at)}</p>
                 </div>
-                <div className="text-right">
-                  <div className="text-xl font-semibold text-mona-blue">{item.prediction ?? item.score ?? '—'}</div>
+
+                <div className="min-w-[160px] rounded-2xl border border-dashed border-mona-blue/35 bg-white/70 p-4 text-right">
+                  <div className="text-2xl font-semibold text-mona-blue">{formatMetric(item.prediction)}</div>
                   <div className="text-xs uppercase tracking-[0.25em] text-mona-orange">signal strength</div>
+                  <div className="mt-2 text-sm text-slate-600">{item.effective ? 'Effective' : 'Needs review'}</div>
                 </div>
               </li>
             ))}
