@@ -12,9 +12,14 @@ html, body, #__next { height: 100%; }
 
 body { background: var(--mona-bg); color: var(--mona-blue); font-family: Inter, ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial; }
 
-.mona-btn { background: transparent; color:var(--mona-blue); border:2px dashed var(--mona-blue); padding:.6rem 1rem; border-radius:10px; font-weight:600; display:inline-block; text-decoration:none }
-.mona-btn--accent { border-color:var(--mona-orange); color:var(--mona-blue); box-shadow:0 6px 20px rgba(15,111,255,0.06); }
-.mona-card { border:1px dashed var(--mona-blue); padding:1rem; border-radius:14px; background:linear-gradient(180deg, rgba(15,111,255,0.02), transparent); }
+.mona-btn { background: transparent; color:var(--mona-blue); border:2px dashed var(--mona-blue); padding:.7rem 1rem; border-radius:999px; font-weight:600; display:inline-block; text-decoration:none; transition: transform 160ms ease, box-shadow 160ms ease; }
+.mona-btn:hover { transform: translateY(-1px); box-shadow:0 8px 24px rgba(15,111,255,0.12); }
+.mona-btn--accent { border-color:var(--mona-orange); color:var(--mona-blue); box-shadow:0 8px 24px rgba(255,122,45,0.12); }
+.mona-card { border:1px dashed var(--mona-blue); border-radius:24px; background:rgba(255,255,255,0.84); box-shadow:0 18px 40px rgba(15,111,255,0.06); }
+.mona-pill { display:inline-flex; align-items:center; gap:.35rem; border:1px dashed var(--mona-orange); color:var(--mona-orange); border-radius:999px; padding:.35rem .7rem; font-size:.78rem; font-weight:700; text-transform:uppercase; letter-spacing:0.16em; }
+.mona-label { display:block; margin-bottom:.45rem; font-size:.9rem; font-weight:600; color:var(--mona-blue); }
+.mona-input { width:100%; border:1px dashed var(--mona-blue); border-radius:16px; background:white; padding:.8rem 1rem; color:var(--mona-blue); outline:none; box-shadow: inset 0 1px 2px rgba(15,111,255,0.05); }
+.mona-input:focus { border-color:var(--mona-orange); box-shadow:0 0 0 3px rgba(255,122,45,0.16); }
 
 /* accessibility helpers */
 .sr-only { position:absolute; width:1px; height:1px; padding:0; margin:-1px; overflow:hidden; clip:rect(0,0,0,0); white-space:nowrap; border:0 }
