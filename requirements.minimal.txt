@@ -10,3 +10,7 @@ pydantic_core==2.33.2
 python-dateutil==2.9.0.post0
 starlette==0.46.2
 typing_extensions==4.13.2
+
+# Added for Auth0 JWT verification and Supabase writes
+python-jose[cryptography]
+supabase
