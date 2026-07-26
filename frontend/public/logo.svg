@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="420" height="120" viewBox="0 0 420 120" fill="none" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMinYMid meet">
+  <defs>
+    <linearGradient id="g1" x1="0" x2="1" y1="0" y2="0">
+      <stop offset="0%" stop-color="#0f6fff"/>
+      <stop offset="60%" stop-color="#7bc4ff"/>
+      <stop offset="100%" stop-color="#ff7a2d"/>
+    </linearGradient>
+  </defs>
+  <!-- Transparent background by design -->
+  <g transform="translate(12,10)">
+    <!-- Ascension emblem: upward chevron + subtle wings -->
+    <path d="M30 70 L60 10 L90 70 Z" fill="url(#g1)" opacity="0.96" />
+    <path d="M18 70 C34 50 28 28 60 12" stroke="#0f6fff" stroke-width="4" fill="none" stroke-linecap="round" opacity="0.6"/>
+    <path d="M102 70 C86 50 92 28 60 12" stroke="#ff7a2d" stroke-width="4" fill="none" stroke-linecap="round" opacity="0.6"/>
+
+    <!-- Wordmark -->
+    <g transform="translate(130,62)">
+      <text x="0" y="0" font-family="Inter, Arial, Helvetica, sans-serif" font-weight="700" font-size="36" fill="#0b2340">MONA</text>
+      <text x="0" y="26" font-family="Inter, Arial, Helvetica, sans-serif" font-weight="500" font-size="12" fill="#0f6fff">Model Of Natural Ascension</text>
+    </g>
+  </g>
+</svg>
