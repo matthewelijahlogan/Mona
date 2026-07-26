@@ -129,44 +129,43 @@ body::before {
   border-color: var(--mona-orange);
   box-shadow: 0 0 0 3px rgba(255, 122, 45, 0.16);
 }
-
 .mona-element-grid {
- display: grid;
- grid-template-columns: repeat(auto-fit, minmax(96px, 1fr));
- gap: 0.75rem;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(96px, 1fr));
+  gap: 0.75rem;
 }
 
 .mona-element-tile {
- border: 1px dashed rgba(15, 111, 255, 0.32);
- border-radius: 16px;
- background: rgba(255, 255, 255, 0.9);
- padding: 0.7rem 0.6rem;
- display: flex;
- flex-direction: column;
- align-items: flex-start;
- gap: 0.25rem;
- transition: transform 160ms ease, box-shadow 160ms ease, border-color 160ms ease;
+  border: 1px dashed rgba(15, 111, 255, 0.32);
+  border-radius: 16px;
+  background: rgba(255, 255, 255, 0.9);
+  padding: 0.7rem 0.6rem;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.25rem;
+  transition: transform 160ms ease, box-shadow 160ms ease, border-color 160ms ease;
 }
 
 .mona-element-tile:hover {
- transform: translateY(-1px);
- box-shadow: 0 10px 20px rgba(15, 111, 255, 0.08);
+  transform: translateY(-1px);
+  box-shadow: 0 10px 20px rgba(15, 111, 255, 0.08);
 }
 
 .mona-element-tile.is-selected {
- border-color: var(--mona-orange);
- background: linear-gradient(135deg, rgba(255, 122, 45, 0.12), rgba(15, 111, 255, 0.08));
+  border-color: var(--mona-orange);
+  background: linear-gradient(135deg, rgba(255, 122, 45, 0.12), rgba(15, 111, 255, 0.08));
 }
 
 .mona-element-symbol {
- font-size: 1rem;
- font-weight: 700;
- color: var(--mona-blue);
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--mona-blue);
 }
 
 .mona-element-name {
- font-size: 0.72rem;
- color: rgba(15, 111, 255, 0.76);
+  font-size: 0.72rem;
+  color: rgba(15, 111, 255, 0.76);
 }
 
 /* accessibility helpers */
