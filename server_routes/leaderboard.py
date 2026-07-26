@@ -4,11 +4,36 @@ from datetime import datetime, timezone
 from threading import Lock
 from typing import Any
 
-from fastapi import APIRouter, HTTPException, Query
+import requests
+from jose import jwt
+from jose.exceptions import JWTError
+
+from fastapi import APIRouter, HTTPException, Query, Request
 from pydantic import BaseModel, Field
 
 from config import ELEMENTS_ORDER
 from logic.predictor_scoring import score_feature_vector
+
+# Optional Supabase client — only used if SUPABASE_URL and SUPABASE_SERVICE_ROLE_KEY are provided
+_supabase_client = None
+try:
+    from supabase import create_client
+
+    SUPABASE_URL = os.getenv("SUPABASE_URL")
+    SUPABASE_SERVICE_ROLE_KEY = os.getenv("SUPABASE_SERVICE_ROLE_KEY")
+    if SUPABASE_URL and SUPABASE_SERVICE_ROLE_KEY:
+        _supabase_client = create_client(SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY)
+except Exception:
+    _supabase_client = None
+
+# Auth0 configuration (optional). If not set, endpoints will accept anonymous submissions as before.
+AUTH0_ISSUER = os.getenv("AUTH0_ISSUER_BASE_URL")  # e.g., https://your-tenant.us.auth0.com
+AUTH0_AUDIENCE = os.getenv("AUTH0_AUDIENCE")
+
+# Cache JWKS for a short period in-memory to avoid fetching on every request
+_JWKS_CACHE: dict | None = None
+_JWKS_CACHE_TIMESTAMP: float | None = None
+
 
 router = APIRouter(prefix="/leaderboard", tags=["Leaderboard"])
 
@@ -104,6 +129,64 @@ def _sorted_entries(
     return filtered[:limit]
 
 
+def _get_jwks():
+    global _JWKS_CACHE, _JWKS_CACHE_TIMESTAMP
+    if AUTH0_ISSUER is None:
+        return None
+    # Simple cache; refresh every 300 seconds
+    import time
+
+    now = time.time()
+    if _JWKS_CACHE and _JWKS_CACHE_TIMESTAMP and now - _JWKS_CACHE_TIMESTAMP < 300:
+        return _JWKS_CACHE
+
+    jwks_url = AUTH0_ISSUER.rstrip("/") + "/.well-known/jwks.json"
+    try:
+        resp = requests.get(jwks_url, timeout=5)
+        resp.raise_for_status()
+        _JWKS_CACHE = resp.json()
+        _JWKS_CACHE_TIMESTAMP = now
+        return _JWKS_CACHE
+    except Exception:
+        return None
+
+
+def _verify_auth0_jwt(token: str) -> dict | None:
+    """Verify an Auth0-issued RS256 JWT and return its claims, or None if verification fails or is not configured."""
+    if not AUTH0_ISSUER:
+        return None
+
+    try:
+        unverified_header = jwt.get_unverified_header(token)
+    except JWTError:
+        return None
+
+    jwks = _get_jwks()
+    if not jwks:
+        return None
+
+    kid = unverified_header.get("kid")
+    key = None
+    for jwk in jwks.get("keys", []):
+        if jwk.get("kid") == kid:
+            key = jwk
+            break
+    if key is None:
+        return None
+
+    try:
+        claims = jwt.decode(
+            token,
+            key,
+            algorithms=["RS256"],
+            audience=AUTH0_AUDIENCE,
+            issuer=AUTH0_ISSUER,
+        )
+        return claims
+    except JWTError:
+        return None
+
+
 @router.get("")
 def get_leaderboard(
     cancer_type: str | None = None,
@@ -123,7 +206,16 @@ def get_leaderboard(
 
 
 @router.post("/submit")
-def submit_recipe(req: RecipeSubmissionRequest):
+async def submit_recipe(req: RecipeSubmissionRequest, request: Request):
+    # Attempt to extract user info from Authorization header (Bearer token)
+    auth_header = request.headers.get("authorization")
+    user_info = None
+    if auth_header and auth_header.lower().startswith("bearer "):
+        token = auth_header.split(" ", 1)[1]
+        claims = _verify_auth0_jwt(token)
+        if claims:
+            user_info = {"sub": claims.get("sub"), "name": claims.get("name") or claims.get("email")}
+
     try:
         normalized_elements = _normalize_elements(req.elements)
         scoring = score_feature_vector(_build_feature_vector(normalized_elements), req.cancer_type)
@@ -135,10 +227,11 @@ def submit_recipe(req: RecipeSubmissionRequest):
         raise HTTPException(status_code=500, detail=f"Unable to score recipe: {exc}") from exc
 
     created_at = datetime.now(timezone.utc).isoformat()
+    submitter = req.submitted_by.strip() or (user_info and user_info.get("name")) or "Anonymous"
     entry = {
         "id": f"{req.cancer_type}:{req.recipe_name}:{created_at}",
         "recipe_name": req.recipe_name.strip(),
-        "submitted_by": req.submitted_by.strip() or "Anonymous",
+        "submitted_by": submitter,
         "cancer_type": req.cancer_type,
         "elements": normalized_elements,
         "formula": _build_formula(normalized_elements),
@@ -152,6 +245,7 @@ def submit_recipe(req: RecipeSubmissionRequest):
         "created_at": created_at,
     }
 
+    # Persist to local JSON leaderboard as before
     with LEADERBOARD_LOCK:
         try:
             entries = _load_entries()
@@ -161,6 +255,25 @@ def submit_recipe(req: RecipeSubmissionRequest):
         entries.append(entry)
         _save_entries(entries)
         ranked_entries = _sorted_entries(entries, req.cancer_type, 10)
+
+    # Attempt to write to Supabase findings table if configured. Fail silently (log) to avoid breaking API
+    if _supabase_client:
+        try:
+            payload = {
+                "user_id": user_info.get("sub") if user_info else None,
+                "user_display": submitter,
+                "title": entry["recipe_name"],
+                "composition": entry["elements"],
+                "drugs_referenced": None,
+                "computed_score": float(entry.get("prediction") or 0.0),
+                "validation_state": "pending",
+                "metadata": {"source": "leaderboard_submission"},
+                "created_at": entry["created_at"],
+            }
+            _supabase_client.table("findings").insert(payload).execute()
+        except Exception:
+            # Do not raise — keep original behavior. In production, log to monitoring.
+            pass
 
     rank = next(
         (
