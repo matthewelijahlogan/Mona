@@ -1,17 +1,8 @@
 import { useMemo, useState } from 'react'
 import Link from 'next/link'
 import AppShell from '../components/AppShell'
-
-function parseElements(text) {
-  const normalized = {}
-  text.split(/\n|,/).forEach((entry) => {
-    const trimmed = entry.trim()
-    if (!trimmed) return
-    const [symbol, value] = trimmed.split(':').map((part) => part.trim())
-    if (symbol && value) normalized[symbol] = Number(value)
-  })
-  return normalized
-}
+import ElementComposer from '../components/ElementComposer'
+import cancerTypes from '../../data/cancer_types.json'
 
 function formatMetric(value) {
   if (value === null || value === undefined || value === '') return '—'
@@ -25,15 +16,15 @@ function formatMetric(value) {
 export default function Submit() {
   const [title, setTitle] = useState('')
   const [submittedBy, setSubmittedBy] = useState('')
-  const [cancerType, setCancerType] = useState('')
-  const [elements, setElements] = useState('H: 0.6\nO: 0.4')
+  const [cancerType, setCancerType] = useState('Glioma')
+  const [elements, setElements] = useState({ H: 0.6, O: 0.4 })
   const [status, setStatus] = useState(null)
   const [result, setResult] = useState(null)
   const [errorMessage, setErrorMessage] = useState('')
 
-  const parsedElements = useMemo(() => parseElements(elements), [elements])
-  const elementEntries = Object.entries(parsedElements).sort((a, b) => b[1] - a[1])
-  const formulaPreview = elementEntries.map(([symbol, amount]) => `${symbol}${amount}`).join(' + ')
+  const elementEntries = useMemo(() => Object.entries(elements).filter(([, amount]) => Number(amount) > 0).sort((a, b) => b[1] - a[1]), [elements])
+  const formulaPreview = elementEntries.map(([symbol, amount]) => `${symbol}${Number(amount).toFixed(2)}`).join(' + ')
+  const activeCancer = useMemo(() => cancerTypes.find((entry) => entry.name === cancerType) || null, [cancerType])
 
   async function handleSubmit(e) {
     e.preventDefault()
@@ -45,7 +36,7 @@ export default function Submit() {
       title: title.trim(),
       submitted_by: submittedBy.trim() || null,
       cancer_type: cancerType.trim() || null,
-      elements: parsedElements
+      elements
     }
 
     try {
@@ -84,18 +75,16 @@ export default function Submit() {
             <p className="mt-2 text-sm text-slate-700">The engine evaluates the vector from the field input you provide.</p>
           </div>
 
-          <div className="mt-6 space-y-3">
-            {elementEntries.length === 0 ? (
-              <div className="rounded-2xl border border-dashed border-mona-blue/35 bg-white/70 p-4 text-sm text-slate-700">
-                Add at least one element pair to build a submission profile.
+          <div className="mt-6 rounded-2xl border border-dashed border-mona-blue/35 bg-white/80 p-5">
+            <p className="text-[10px] uppercase tracking-[0.28em] text-mona-orange">Cancer context</p>
+            {activeCancer ? (
+              <div className="mt-3 space-y-2 text-sm text-slate-700">
+                <p className="font-semibold text-mona-blue">{activeCancer.name}</p>
+                <p>{activeCancer.description}</p>
+                <p className="text-xs uppercase tracking-[0.24em] text-slate-500">Aggressiveness {activeCancer.aggressiveness_score}</p>
               </div>
             ) : (
-              elementEntries.slice(0, 5).map(([symbol, amount]) => (
-                <div key={symbol} className="flex items-center justify-between rounded-2xl border border-dashed border-mona-blue/35 bg-white/70 px-4 py-3 text-sm text-slate-700">
-                  <span className="font-semibold text-mona-blue">{symbol}</span>
-                  <span>{amount}</span>
-                </div>
-              ))
+              <p className="mt-2 text-sm text-slate-700">Choose a cancer target to refine the scoring context.</p>
             )}
           </div>
 
@@ -123,14 +112,18 @@ export default function Submit() {
               </div>
               <div>
                 <label className="mona-label" htmlFor="cancerType">Target cancer</label>
-                <input id="cancerType" className="mona-input" value={cancerType} onChange={(e) => setCancerType(e.target.value)} placeholder="Breast / Glioblastoma / etc." />
+                <input id="cancerType" className="mona-input" list="cancer-types" value={cancerType} onChange={(e) => setCancerType(e.target.value)} placeholder="Breast / Glioblastoma / etc." />
+                <datalist id="cancer-types">
+                  {cancerTypes.map((entry) => (
+                    <option key={entry.name} value={entry.name} />
+                  ))}
+                </datalist>
               </div>
             </div>
 
             <div>
-              <label className="mona-label" htmlFor="elements">Element map</label>
-              <textarea id="elements" className="mona-input min-h-[140px]" value={elements} onChange={(e) => setElements(e.target.value)} placeholder="Use lines like H: 0.6 or Fe: 0.3" />
-              <p className="mt-2 text-sm text-slate-600">Use simple pairs such as Fe: 0.4, Cu: 0.2, or one per line.</p>
+              <label className="mona-label" htmlFor="elements">Element composer</label>
+              <ElementComposer value={elements} onChange={setElements} />
             </div>
 
             <div className="flex flex-wrap items-center gap-3">
@@ -167,6 +160,17 @@ export default function Submit() {
                   <p className="mona-kicker">Band</p>
                   <p className="mt-2 text-xl font-semibold text-mona-blue">{result.entry.sensitivity_band}</p>
                 </div>
+              </div>
+              <div className="mt-4 rounded-2xl border border-dashed border-mona-orange/40 bg-white/80 p-4 text-sm text-slate-700">
+                <p className="font-semibold text-mona-blue">Interpretation</p>
+                <p className="mt-2">
+                  {result.entry.effective
+                    ? 'This composition is currently interpreted as an effective candidate within the scoring surface.'
+                    : 'This composition sits in the review band; it should be treated as a hypothesis until more evidence is gathered.'}
+                </p>
+                <p className="mt-2">
+                  Sensitivity percentile {formatMetric(result.entry.sensitivity_percentile)} and threshold {formatMetric(result.entry.threshold_auc)} frame the current decision boundary.
+                </p>
               </div>
             </div>
           ) : null}
