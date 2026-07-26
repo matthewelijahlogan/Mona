@@ -12,3 +12,23 @@ services:
         value: 3.11.9
       - key: MONA_LEADERBOARD_PATH
         value: /opt/render/project/src/render-data/recipe_leaderboard.json
+
+  - type: web
+    name: mona-frontend
+    runtime: node
+    plan: free
+    branch: main
+    buildCommand: cd frontend && npm ci && npm run build
+    startCommand: cd frontend && npm run start -- -p $PORT
+    healthCheckPath: /
+    envVars:
+      - key: NEXT_PUBLIC_API_URL
+        value: ""
+      - key: AUTH0_BASE_URL
+        value: ""
+      - key: AUTH0_ISSUER_BASE_URL
+        value: ""
+      - key: AUTH0_CLIENT_ID
+        value: ""
+      - key: AUTH0_CLIENT_SECRET
+        value: ""
