@@ -2,94 +2,86 @@ import Link from 'next/link'
 import useSWR from 'swr'
 import AppShell from '../components/AppShell'
 
-const fetcher = (url) => fetch(url).then((r) => r.json())
+const fetcher = (url) => fetch(url).then((response) => {
+  if (!response.ok) throw new Error('Unable to load discoveries')
+  return response.json()
+})
 
-function formatMetric(value) {
-  if (value === null || value === undefined || value === '') return '—'
+function formatMetric(value, digits = 3) {
   const number = Number(value)
-  if (Number.isFinite(number)) {
-    return number >= 10 ? number.toFixed(0) : number.toFixed(2)
-  }
-  return String(value)
+  return Number.isFinite(number) ? number.toFixed(digits) : '—'
 }
 
 function formatDate(value) {
-  if (!value) return '—'
-  try {
-    return new Date(value).toLocaleString()
-  } catch (error) {
-    return value
-  }
+  if (!value) return 'Date unavailable'
+  return new Intl.DateTimeFormat('en', { dateStyle: 'medium' }).format(new Date(value))
 }
 
 export default function Leaderboard() {
-  const { data, error } = useSWR('/api/leaderboard', fetcher)
+  const { data, error, isLoading } = useSWR('/api/leaderboard', fetcher, {
+    refreshInterval: 30000,
+  })
   const entries = data?.entries || []
-  const total = data?.total ?? entries.length
 
   return (
-    <AppShell title="Discovery leaderboard" subtitle="A ranked view of the submissions currently driving the MONA field.">
-      <section className="mona-card p-8">
-        <div className="flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
+    <AppShell compactHeader>
+      <section className="discoveries-hero">
+        <div>
+          <p className="eyebrow">Public field / live rankings</p>
+          <h1>Discoveries in motion.</h1>
+          <p>
+            A transparent record of published elemental analyses, ranked by exploratory signal.
+            Every result remains a research hypothesis until externally validated.
+          </p>
+        </div>
+        <div className="discovery-count">
+          <span>Visible findings</span>
+          <strong>{isLoading ? '··' : data?.total ?? entries.length}</strong>
+          <small>refreshes every 30 seconds</small>
+        </div>
+      </section>
+
+      <section className="leaderboard-section">
+        <div className="leaderboard-toolbar">
           <div>
-            <p className="mona-pill">Live field activity</p>
-            <h2 className="mt-3 text-2xl font-semibold">Ranked findings</h2>
-            <p className="mt-2 text-sm text-slate-700">
-              {total} submission{total === 1 ? '' : 's'} currently visible in the field.
-            </p>
+            <span className="status-pulse" />
+            Live MONA field
           </div>
-          <div className="flex flex-wrap gap-3">
-            <Link href="/submit">
-              <a className="mona-btn mona-btn--accent">Publish a finding</a>
-            </Link>
-            <Link href="/">
-              <a className="mona-btn">Return home</a>
-            </Link>
-          </div>
+          <Link href="/submit">
+            <a className="button button--primary">Start an analysis <span>↗</span></a>
+          </Link>
         </div>
 
         {error ? (
-          <div className="mt-6 rounded-2xl border border-dashed border-mona-blue/40 bg-white/70 p-4 text-sm text-slate-700">
-            The leaderboard is temporarily unavailable. Please try again in a moment.
-          </div>
-        ) : !data ? (
-          <div className="mt-6 rounded-2xl border border-dashed border-mona-blue/40 bg-white/70 p-4 text-sm text-slate-700">
-            Loading live findings…
-          </div>
+          <div className="field-message">The public field is reconnecting. Please try again shortly.</div>
+        ) : isLoading ? (
+          <div className="field-message">Resolving live discoveries…</div>
         ) : entries.length === 0 ? (
-          <div className="mt-6 rounded-2xl border border-dashed border-mona-blue/40 bg-white/70 p-4 text-sm text-slate-700">
-            No entries yet. Be the first to publish a finding.
-          </div>
+          <div className="field-message">The field is open. Publish the first elemental analysis.</div>
         ) : (
-          <ol className="mt-6 space-y-4">
+          <ol className="rank-list">
             {entries.map((item, index) => (
-              <li key={item.id || `${item.recipe_name}-${index}`} className="flex flex-col gap-4 rounded-2xl border border-dashed border-mona-blue/40 bg-white/85 p-5 md:flex-row md:items-start md:justify-between">
-                <div className="flex-1">
-                  <div className="flex flex-wrap items-center gap-3">
-                    <span className="rounded-full border border-dashed border-mona-blue/40 px-3 py-1 text-sm font-semibold text-mona-blue">
-                      #{index + 1}
-                    </span>
-                    <div>
-                      <div className="font-semibold text-lg">{item.recipe_name}</div>
-                      <div className="text-sm text-slate-600">
-                        Submitted by {item.submitted_by || 'anonymous'} • {item.cancer_type || 'targeted profile'}
-                      </div>
-                    </div>
-                  </div>
-
-                  <div className="mt-3 flex flex-wrap gap-2">
-                    <span className="mona-chip">{item.formula || 'formula pending'}</span>
-                    <span className="mona-chip">Band {item.sensitivity_band || '—'}</span>
-                    <span className="mona-chip">AUC {formatMetric(item.predicted_auc)}</span>
-                  </div>
-
-                  <p className="mt-3 text-sm text-slate-600">Published {formatDate(item.created_at)}</p>
+              <li key={item.id || `${item.recipe_name}-${index}`}>
+                <div className="rank-number">{String(index + 1).padStart(2, '0')}</div>
+                <div className="rank-identity">
+                  <p>{item.cancer_type || 'Unspecified profile'}</p>
+                  <h2>{item.recipe_name}</h2>
+                  <span>by {item.submitted_by || 'Anonymous'} · {formatDate(item.created_at)}</span>
                 </div>
-
-                <div className="min-w-[160px] rounded-2xl border border-dashed border-mona-blue/35 bg-white/70 p-4 text-right">
-                  <div className="text-2xl font-semibold text-mona-blue">{formatMetric(item.prediction)}</div>
-                  <div className="text-xs uppercase tracking-[0.25em] text-mona-orange">signal strength</div>
-                  <div className="mt-2 text-sm text-slate-600">{item.effective ? 'Effective' : 'Needs review'}</div>
+                <div className="rank-formula">
+                  <span>Composition</span>
+                  <strong>{item.formula || '—'}</strong>
+                  <small>{item.analysis_mode || 'legacy'} analysis</small>
+                </div>
+                <div className="rank-coverage">
+                  <span>Coverage</span>
+                  <strong>{item.evidence_coverage == null ? '—' : `${Math.round(item.evidence_coverage * 100)}%`}</strong>
+                  <small>{item.sensitivity_band || 'Unclassified signal'}</small>
+                </div>
+                <div className="rank-score">
+                  <span>Signal</span>
+                  <strong>{formatMetric(item.prediction)}</strong>
+                  <i style={{ '--rank-score': `${Math.max(0, Math.min(1, Number(item.prediction) || 0)) * 100}%` }} />
                 </div>
               </li>
             ))}

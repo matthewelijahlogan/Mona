@@ -11,8 +11,7 @@ from jose.exceptions import JWTError
 from fastapi import APIRouter, HTTPException, Query, Request
 from pydantic import BaseModel, Field
 
-from config import ELEMENTS_ORDER
-from logic.predictor_scoring import score_feature_vector
+from logic.composition_scoring import analyze_composition, element_catalog, normalize_composition
 
 # Optional Supabase client — only used if SUPABASE_URL and SUPABASE_SERVICE_ROLE_KEY are provided
 _supabase_client = None
@@ -47,7 +46,7 @@ LEADERBOARD_LOCK = Lock()
 
 class RecipeSubmissionRequest(BaseModel):
     recipe_name: str = Field(..., min_length=1, max_length=80)
-    submitted_by: str = Field(default="Anonymous", max_length=80)
+    submitted_by: str | None = Field(default="Anonymous", max_length=80)
     cancer_type: str = Field(..., min_length=1)
     elements: dict[str, float]
 
@@ -72,27 +71,8 @@ def _save_entries(entries: list[dict[str, Any]]) -> None:
 
 
 def _normalize_elements(elements: dict[str, float]) -> dict[str, float]:
-    normalized: dict[str, float] = {}
-
-    for symbol, raw_amount in elements.items():
-        if symbol not in ELEMENTS_ORDER:
-            raise ValueError(f"Unsupported element: {symbol}")
-
-        try:
-            amount = float(raw_amount)
-        except (TypeError, ValueError) as exc:
-            raise ValueError(f"Invalid amount for {symbol}") from exc
-
-        if amount < 0:
-            raise ValueError(f"Element amounts must be zero or greater: {symbol}")
-
-        if amount > 0:
-            normalized[symbol] = round(amount, 4)
-
-    if not normalized:
-        raise ValueError("At least one element amount greater than zero is required.")
-
-    return normalized
+    raw, _normalized = normalize_composition(elements)
+    return {symbol: round(amount, 4) for symbol, amount in raw.items()}
 
 
 def _format_amount(amount: float) -> str:
@@ -103,15 +83,12 @@ def _format_amount(amount: float) -> str:
 
 def _build_formula(elements: dict[str, float]) -> str:
     parts: list[str] = []
-    for symbol in ELEMENTS_ORDER:
+    catalog = element_catalog()
+    for symbol in sorted(elements, key=lambda item: catalog[item]["atomic_number"]):
         amount = elements.get(symbol)
         if amount:
             parts.append(f"{symbol}{_format_amount(amount)}")
     return "".join(parts)
-
-
-def _build_feature_vector(elements: dict[str, float]) -> list[float]:
-    return [float(elements.get(symbol, 0.0)) for symbol in ELEMENTS_ORDER]
 
 
 def _sorted_entries(
@@ -218,7 +195,7 @@ async def submit_recipe(req: RecipeSubmissionRequest, request: Request):
 
     try:
         normalized_elements = _normalize_elements(req.elements)
-        scoring = score_feature_vector(_build_feature_vector(normalized_elements), req.cancer_type)
+        scoring = analyze_composition(normalized_elements, req.cancer_type)
     except ValueError as exc:
         raise HTTPException(status_code=400, detail=str(exc)) from exc
     except RuntimeError as exc:
@@ -227,7 +204,11 @@ async def submit_recipe(req: RecipeSubmissionRequest, request: Request):
         raise HTTPException(status_code=500, detail=f"Unable to score recipe: {exc}") from exc
 
     created_at = datetime.now(timezone.utc).isoformat()
-    submitter = req.submitted_by.strip() or (user_info and user_info.get("name")) or "Anonymous"
+    submitter = (
+        (req.submitted_by or "").strip()
+        or (user_info and user_info.get("name"))
+        or "Anonymous"
+    )
     entry = {
         "id": f"{req.cancer_type}:{req.recipe_name}:{created_at}",
         "recipe_name": req.recipe_name.strip(),
@@ -235,13 +216,15 @@ async def submit_recipe(req: RecipeSubmissionRequest, request: Request):
         "cancer_type": req.cancer_type,
         "elements": normalized_elements,
         "formula": _build_formula(normalized_elements),
-        "prediction": scoring["prediction"],
-        "raw_prediction": scoring["raw_prediction"],
-        "predicted_auc": scoring["predicted_auc"],
-        "sensitivity_band": scoring["sensitivity_band"],
-        "sensitivity_percentile": scoring["sensitivity_percentile"],
-        "effective": scoring["effective"],
-        "threshold_auc": scoring["threshold_auc"],
+        "prediction": scoring["exploration_score"],
+        "raw_prediction": scoring["raw_signal"],
+        "predicted_auc": None,
+        "sensitivity_band": scoring["signal_band"],
+        "sensitivity_percentile": round(scoring["exploration_score"] * 100, 2),
+        "effective": None,
+        "threshold_auc": None,
+        "analysis_mode": scoring["analysis_mode"],
+        "evidence_coverage": scoring["evidence_coverage"],
         "created_at": created_at,
     }
 

@@ -5,6 +5,10 @@ __pycache__/
 .env
 .env.*
 render-data/
+frontend/node_modules/
+frontend/.next/
+frontend/public/mona-logo-source.png
+tmp/
 mobile/.expo/
 mobile/dist/
 mobile/node_modules/

@@ -8,7 +8,9 @@ from fastapi.middleware.cors import CORSMiddleware
 
 from config import DYNAMIC_CANCER_TYPE_MAP, MODEL_PATH, predictor_metadata
 from logic.element_utils import get_elements_data
+from logic.composition_scoring import list_elements as list_composition_elements
 from server_routes.leaderboard import router as leaderboard_router
+from server_routes.composition import router as composition_router
 from server_routes.predict import router as predict_router
 from server_routes.simulate import router as simulate_router
 from server_routes.top_synthetic import router as top_synthetic_router
@@ -40,6 +42,7 @@ app.include_router(simulate_router)
 app.include_router(top_synthetic_router)
 app.include_router(predict_router)
 app.include_router(leaderboard_router)
+app.include_router(composition_router)
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 DATA_DIR = os.path.join(BASE_DIR, "data")
@@ -98,6 +101,8 @@ def api_status():
         "cancer_types_loaded": len(cancer_json) > 0,
         "num_cancer_types": len(DYNAMIC_CANCER_TYPE_MAP),
         "predictor_supported_cancers": len(PREDICTOR_SUPPORTED_CANCERS),
+        "composition_engine": "online",
+        "composition_elements": len(list_composition_elements()),
         "data_dir": DATA_DIR,
     }
 

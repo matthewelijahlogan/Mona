@@ -1,181 +1,254 @@
 import { useMemo, useState } from 'react'
-import Link from 'next/link'
 import AppShell from '../components/AppShell'
 import ElementComposer from '../components/ElementComposer'
-import cancerTypes from '../../data/cancer_types.json'
+import { CANCER_TYPES as cancerTypes } from '../data/cancerTypes'
 
-function formatMetric(value) {
-  if (value === null || value === undefined || value === '') return '—'
+const SUPPORTED_CANCERS = new Set([
+  'Breast Cancer',
+  'Colon Adenocarcinoma',
+  'Lung Adenocarcinoma',
+  'Lung Squamous Cell Carcinoma',
+  'Melanoma',
+  'Ovarian Serous Cystadenocarcinoma',
+  'Prostate Cancer',
+])
+
+const CANCER_OPTIONS = cancerTypes
+  .map((entry) => entry.name)
+  .filter(Boolean)
+  .sort((a, b) => {
+    const supportDelta = Number(SUPPORTED_CANCERS.has(b)) - Number(SUPPORTED_CANCERS.has(a))
+    return supportDelta || a.localeCompare(b)
+  })
+
+function percent(value) {
   const number = Number(value)
-  if (Number.isFinite(number)) {
-    return number >= 10 ? number.toFixed(0) : number.toFixed(2)
-  }
-  return String(value)
+  return Number.isFinite(number) ? `${Math.round(number * 100)}%` : '—'
 }
 
 export default function Submit() {
+  const [cancerType, setCancerType] = useState('Breast Cancer')
+  const [elements, setElements] = useState({ C: 1, H: 2, O: 1 })
+  const [analysis, setAnalysis] = useState(null)
+  const [analysisState, setAnalysisState] = useState('idle')
+  const [analysisError, setAnalysisError] = useState('')
   const [title, setTitle] = useState('')
   const [submittedBy, setSubmittedBy] = useState('')
-  const [cancerType, setCancerType] = useState('Glioma')
-  const [elements, setElements] = useState({ H: 0.6, O: 0.4 })
-  const [status, setStatus] = useState(null)
-  const [result, setResult] = useState(null)
-  const [errorMessage, setErrorMessage] = useState('')
+  const [publishState, setPublishState] = useState('idle')
+  const [published, setPublished] = useState(null)
 
-  const elementEntries = useMemo(() => Object.entries(elements).filter(([, amount]) => Number(amount) > 0).sort((a, b) => b[1] - a[1]), [elements])
-  const formulaPreview = elementEntries.map(([symbol, amount]) => `${symbol}${Number(amount).toFixed(2)}`).join(' + ')
-  const activeCancer = useMemo(() => cancerTypes.find((entry) => entry.name === cancerType) || null, [cancerType])
+  const entryCount = Object.values(elements).filter((amount) => Number(amount) > 0).length
+  const canAnalyze = entryCount > 0 && cancerType
+  const formula = analysis?.formula || Object.entries(elements).map(([symbol, amount]) => `${symbol}${amount}`).join('')
 
-  async function handleSubmit(e) {
-    e.preventDefault()
-    setStatus('submitting')
-    setErrorMessage('')
-    setResult(null)
+  const activeCancer = useMemo(
+    () => cancerTypes.find((entry) => entry.name === cancerType),
+    [cancerType],
+  )
 
-    const payload = {
-      title: title.trim(),
-      submitted_by: submittedBy.trim() || null,
-      cancer_type: cancerType.trim() || null,
-      elements
-    }
-
+  async function analyze() {
+    if (!canAnalyze) return
+    setAnalysisState('loading')
+    setAnalysisError('')
+    setAnalysis(null)
+    setPublished(null)
     try {
-      const res = await fetch('/api/findings', {
+      const response = await fetch('/api/analyze-composition', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(payload)
+        body: JSON.stringify({ cancer_type: cancerType, elements }),
       })
-
-      const json = await res.json().catch(() => ({}))
-      if (!res.ok) {
-        throw new Error(json.detail || json.error || 'Submission failed')
-      }
-
-      setResult(json)
-      setStatus('submitted')
+      const payload = await response.json().catch(() => ({}))
+      if (!response.ok) throw new Error(payload.detail || payload.error || 'Analysis failed')
+      setAnalysis(payload)
+      setAnalysisState('complete')
+      if (!title) setTitle(`${formula || 'Elemental'} field study`)
     } catch (error) {
-      setErrorMessage(error.message)
-      setStatus('error')
+      setAnalysisError(error.message)
+      setAnalysisState('error')
+    }
+  }
+
+  async function publish(event) {
+    event.preventDefault()
+    if (!analysis || !title.trim()) return
+    setPublishState('loading')
+    try {
+      const response = await fetch('/api/findings', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          title: title.trim(),
+          submitted_by: submittedBy.trim() || null,
+          cancer_type: cancerType,
+          elements,
+        }),
+      })
+      const payload = await response.json().catch(() => ({}))
+      if (!response.ok) throw new Error(payload.detail || payload.error || 'Unable to publish')
+      setPublished(payload)
+      setPublishState('complete')
+    } catch (error) {
+      setPublishState('error')
+      setAnalysisError(error.message)
     }
   }
 
   return (
-    <AppShell title="Submit a finding" subtitle="Publish a new composition for the MONA field to score and rank.">
-      <section className="grid gap-6 xl:grid-cols-[0.9fr_1.1fr]">
-        <div className="mona-card p-8">
-          <p className="mona-pill">Research lens</p>
-          <h2 className="mt-4 text-2xl font-semibold">Turn an element map into a live experiment profile.</h2>
-          <p className="mt-3 text-sm text-slate-700">
-            Each submission is parsed into a composition vector, scored against the target cancer profile, and returned with a ranking signal, sensitivity band, and formula preview.
+    <AppShell compactHeader>
+      <section className="lab-intro">
+        <div>
+          <p className="eyebrow">Element lab / composition analysis</p>
+          <h1>Build beyond the known.</h1>
+          <p>
+            Select any elemental combination, set the relative parts, and choose a cancer context.
+            MONA will state how much of the result is evidence-backed and how much is projected.
           </p>
-
-          <div className="mt-6 rounded-2xl border border-dashed border-mona-blue/35 bg-white/80 p-5">
-            <p className="text-[10px] uppercase tracking-[0.28em] text-mona-orange">Formula preview</p>
-            <p className="mt-2 text-xl font-semibold text-mona-blue">{formulaPreview || 'No active elements'}</p>
-            <p className="mt-2 text-sm text-slate-700">The engine evaluates the vector from the field input you provide.</p>
-          </div>
-
-          <div className="mt-6 rounded-2xl border border-dashed border-mona-blue/35 bg-white/80 p-5">
-            <p className="text-[10px] uppercase tracking-[0.28em] text-mona-orange">Cancer context</p>
-            {activeCancer ? (
-              <div className="mt-3 space-y-2 text-sm text-slate-700">
-                <p className="font-semibold text-mona-blue">{activeCancer.name}</p>
-                <p>{activeCancer.description}</p>
-                <p className="text-xs uppercase tracking-[0.24em] text-slate-500">Aggressiveness {activeCancer.aggressiveness_score}</p>
-              </div>
-            ) : (
-              <p className="mt-2 text-sm text-slate-700">Choose a cancer target to refine the scoring context.</p>
-            )}
-          </div>
-
-          <div className="mt-6 flex flex-wrap gap-3">
-            <Link href="/leaderboard">
-              <a className="mona-btn">Review rankings</a>
-            </Link>
-            <Link href="/">
-              <a className="mona-btn mona-btn--accent">Back to overview</a>
-            </Link>
-          </div>
         </div>
-
-        <div className="mona-card p-8">
-          <form onSubmit={handleSubmit} className="space-y-5">
-            <div>
-              <label className="mona-label" htmlFor="title">Discovery title</label>
-              <input id="title" className="mona-input" value={title} onChange={(e) => setTitle(e.target.value)} placeholder="Example: Lanthanum-manganese lattice" />
-            </div>
-
-            <div className="grid gap-5 md:grid-cols-2">
-              <div>
-                <label className="mona-label" htmlFor="submittedBy">Submitted by</label>
-                <input id="submittedBy" className="mona-input" value={submittedBy} onChange={(e) => setSubmittedBy(e.target.value)} placeholder="Dr. A. Rivera" />
-              </div>
-              <div>
-                <label className="mona-label" htmlFor="cancerType">Target cancer</label>
-                <input id="cancerType" className="mona-input" list="cancer-types" value={cancerType} onChange={(e) => setCancerType(e.target.value)} placeholder="Breast / Glioblastoma / etc." />
-                <datalist id="cancer-types">
-                  {cancerTypes.map((entry) => (
-                    <option key={entry.name} value={entry.name} />
-                  ))}
-                </datalist>
-              </div>
-            </div>
-
-            <div>
-              <label className="mona-label" htmlFor="elements">Element composer</label>
-              <ElementComposer value={elements} onChange={setElements} />
-            </div>
-
-            <div className="flex flex-wrap items-center gap-3">
-              <button className="mona-btn mona-btn--accent" type="submit">Publish finding</button>
-              <span className="text-sm text-slate-600">
-                {status === 'submitting' ? 'Publishing…' : status === 'submitted' ? 'Submission sent.' : status === 'error' ? 'Submission failed.' : 'Ready to publish.'}
-              </span>
-            </div>
-            {errorMessage ? <p className="text-sm text-orange-600">{errorMessage}</p> : null}
-          </form>
-
-          {result?.entry ? (
-            <div className="mt-6 rounded-2xl border border-dashed border-mona-blue/35 bg-white/85 p-5">
-              <div className="flex flex-wrap items-center justify-between gap-3">
-                <div>
-                  <p className="text-[10px] uppercase tracking-[0.28em] text-mona-orange">Engine output</p>
-                  <h3 className="mt-2 text-xl font-semibold">{result.entry.recipe_name}</h3>
-                </div>
-                <div className="text-right">
-                  <p className="text-3xl font-semibold text-mona-blue">{formatMetric(result.entry.prediction)}</p>
-                  <p className="text-xs uppercase tracking-[0.24em] text-slate-500">signal</p>
-                </div>
-              </div>
-              <div className="mt-4 grid gap-3 sm:grid-cols-3">
-                <div className="mona-panel">
-                  <p className="mona-kicker">Rank</p>
-                  <p className="mt-2 text-xl font-semibold text-mona-blue">#{result.rank || '—'}</p>
-                </div>
-                <div className="mona-panel">
-                  <p className="mona-kicker">AUC</p>
-                  <p className="mt-2 text-xl font-semibold text-mona-blue">{formatMetric(result.entry.predicted_auc)}</p>
-                </div>
-                <div className="mona-panel">
-                  <p className="mona-kicker">Band</p>
-                  <p className="mt-2 text-xl font-semibold text-mona-blue">{result.entry.sensitivity_band}</p>
-                </div>
-              </div>
-              <div className="mt-4 rounded-2xl border border-dashed border-mona-orange/40 bg-white/80 p-4 text-sm text-slate-700">
-                <p className="font-semibold text-mona-blue">Interpretation</p>
-                <p className="mt-2">
-                  {result.entry.effective
-                    ? 'This composition is currently interpreted as an effective candidate within the scoring surface.'
-                    : 'This composition sits in the review band; it should be treated as a hypothesis until more evidence is gathered.'}
-                </p>
-                <p className="mt-2">
-                  Sensitivity percentile {formatMetric(result.entry.sensitivity_percentile)} and threshold {formatMetric(result.entry.threshold_auc)} frame the current decision boundary.
-                </p>
-              </div>
-            </div>
-          ) : null}
+        <div className="lab-index">
+          <span>Workspace</span>
+          <strong>02</strong>
+          <small>research mode</small>
         </div>
       </section>
+
+      <section className="lab-layout">
+        <div className="lab-main">
+          <ElementComposer value={elements} onChange={(next) => {
+            setElements(next)
+            setAnalysis(null)
+            setAnalysisState('idle')
+          }} />
+        </div>
+
+        <aside className="analysis-console">
+          <div className="console-heading">
+            <p className="eyebrow">Analysis context</p>
+            <span className="console-status"><i /> {analysisState === 'loading' ? 'processing' : 'ready'}</span>
+          </div>
+
+          <label className="field-label" htmlFor="cancer-type">Cancer profile</label>
+          <select
+            id="cancer-type"
+            className="select-field"
+            value={cancerType}
+            onChange={(event) => {
+              setCancerType(event.target.value)
+              setAnalysis(null)
+            }}
+          >
+            {CANCER_OPTIONS.map((name) => (
+              <option value={name} key={name}>
+                {name}{SUPPORTED_CANCERS.has(name) ? ' · direct dataset' : ' · projected'}
+              </option>
+            ))}
+          </select>
+
+          <div className="context-card">
+            <span>{SUPPORTED_CANCERS.has(cancerType) ? 'Direct context' : 'Projected context'}</span>
+            <strong>{cancerType}</strong>
+            <p>{activeCancer?.description || 'Cancer profile from the MONA target map.'}</p>
+          </div>
+
+          <div className="formula-card">
+            <span>Current composition</span>
+            <strong>{formula || '—'}</strong>
+            <small>{entryCount} active / 118 recognized</small>
+          </div>
+
+          <button className="button button--primary button--wide" type="button" disabled={!canAnalyze || analysisState === 'loading'} onClick={analyze}>
+            {analysisState === 'loading' ? 'Resolving field…' : 'Analyze composition'}
+            <span>↗</span>
+          </button>
+
+          <p className="console-disclaimer">
+            Exploratory computation only. Results are not clinical evidence, a treatment recommendation,
+            or a substitute for laboratory validation.
+          </p>
+        </aside>
+      </section>
+
+      {analysisError ? <div className="error-banner">{analysisError}</div> : null}
+
+      {analysis ? (
+        <section className="results-section">
+          <div className="results-heading">
+            <div>
+              <p className="eyebrow">Resolved field / {analysis.analysis_mode}</p>
+              <h2>{analysis.formula}</h2>
+            </div>
+            <div className="result-score">
+              <span>Exploration signal</span>
+              <strong>{Number(analysis.exploration_score).toFixed(3)}</strong>
+            </div>
+          </div>
+
+          <div className="results-grid">
+            <article className="gauge-card">
+              <div
+                className="score-gauge"
+                style={{ '--score': `${Math.round(analysis.exploration_score * 100) * 3.6}deg` }}
+              >
+                <div><strong>{percent(analysis.exploration_score)}</strong><span>signal</span></div>
+              </div>
+              <h3>{analysis.signal_band}</h3>
+              <p>{analysis.interpretation}</p>
+            </article>
+
+            <article className="coverage-card">
+              <p className="eyebrow">Evidence coverage</p>
+              <strong>{percent(analysis.evidence_coverage)}</strong>
+              <div className="coverage-track"><i style={{ width: percent(analysis.evidence_coverage) }} /></div>
+              <p>
+                {analysis.direct_elements.length} direct · {analysis.projected_elements.length} projected element
+                {analysis.projected_elements.length === 1 ? '' : 's'}
+              </p>
+              {analysis.projected_elements.length ? (
+                <div className="projection-list">
+                  {analysis.projected_elements.map((item) => (
+                    <span key={item.symbol}>{item.symbol} via {item.based_on.join(', ')}</span>
+                  ))}
+                </div>
+              ) : null}
+            </article>
+
+            <article className="descriptor-card">
+              <p className="eyebrow">Composition descriptors</p>
+              <dl>
+                <div><dt>Weighted atomic no.</dt><dd>{analysis.descriptors.weighted_atomic_number.toFixed(2)}</dd></div>
+                <div><dt>Molar mass index</dt><dd>{analysis.descriptors.weighted_atomic_mass.toFixed(2)}</dd></div>
+                <div><dt>Element families</dt><dd>{analysis.descriptors.category_count}</dd></div>
+                <div><dt>Normalized total</dt><dd>1.000</dd></div>
+              </dl>
+            </article>
+          </div>
+
+          <div className="limits-note">
+            <span>Read before use</span>
+            <p>{analysis.limitations.join(' ')}</p>
+          </div>
+
+          <form className="publish-panel" onSubmit={publish}>
+            <div>
+              <p className="eyebrow">Optional / public field</p>
+              <h3>Publish this analysis to discoveries.</h3>
+              <p>Your result can be ranked with other MONA explorations. Publishing is optional.</p>
+            </div>
+            <label>
+              <span>Study title</span>
+              <input value={title} onChange={(event) => setTitle(event.target.value)} required maxLength="80" placeholder="Name this elemental study" />
+            </label>
+            <label>
+              <span>Researcher</span>
+              <input value={submittedBy} onChange={(event) => setSubmittedBy(event.target.value)} maxLength="80" placeholder="Anonymous" />
+            </label>
+            <button className="button button--ghost" type="submit" disabled={publishState === 'loading'}>
+              {publishState === 'loading' ? 'Publishing…' : published ? `Published · rank #${published.rank || '—'}` : 'Publish finding'}
+              <span>→</span>
+            </button>
+          </form>
+        </section>
+      ) : null}
     </AppShell>
   )
 }
